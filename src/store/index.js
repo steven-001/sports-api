@@ -10,24 +10,12 @@ Vue.use(Vuex);
 // you do not need `import app from './modules/app'`
 // it will auto require all vuex module from modules file
 
-localStorage.setItem('device',process.env.HOST.indexOf('app')>-1?'app':'h5')
-
 const state = {
   money:10000,
   agentUrl:'',
   agentId:229,
   allGameList:{},
   betObj:[],//串关下注list
-  score:0,//钱包余额
-  insureScore:0,//余额宝余额
-  mailTotal:0,//邮件数量
-  vipLevel:0,//VIP等级
-  pcVipLevelImg:'',//vip大图标
-  vipLevelIcon:'',//vip等级图标
-  vipLevelName:'',//vip等级名称
-  websocketURL:'',//长链接地址
-  websocketType:true,//长链接状态
-  statusList:[],//开关状态数组
   //体育首页菜单数据
   DataNum:{
     jrNum:0,
@@ -39,10 +27,6 @@ const state = {
   gqData:[],
   fgqData:[],
   newBetData:{},
-  //热更状态
-  hotType:0,//0：检查更新，1：正在下载，2：正在安装，3：安装完成
-  iphoneX:true,
-  appBool:false,
   //体育菜单
   sportsType:[],
   refresh:null,
@@ -56,31 +40,11 @@ const state = {
 const store = new Vuex.Store({
   state,
   mutations:{
-    //获取开关状态数组
-    getStatusList(state,data){
-      state.statusList=data
-    },
     changeBetObj(state,betObj){
      state.betObj.push(betObj);
     },
     delBetObj(state){
       state.betObj=[];
-    },
-    setScore(state,data){
-      state.pcVipLevelImg=data.pcVipLevelImg
-      console.log(state.pcVipLevelImg)
-      state.score=data.score
-      state.insureScore=data.insureScore
-      state.mailTotal=data.mailTotal
-      state.vipLevel=data.vipLevel
-      state.vipLevelIcon=data.h5VipLevelImg
-      state.vipLevelName=data.vipLevelName
-    },
-    setInsureScore(state,num){
-      state.insureScore=num
-    },
-    setWebsocketType(state,type){
-      state.websocketType=type
     },
     setURL(state,url){
       state.YsbUrl=url;
