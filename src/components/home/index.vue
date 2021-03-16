@@ -896,13 +896,6 @@
       </div>
     </van-popup>
 
-    <!--公用弹出层-->
-    <van-popup class="bet"
-               v-model="show"
-               position="right"
-               duration="0.2"
-               :style="{ height: '100%',width:'100%'}">
-    </van-popup>
 
     <!--加载动画-->
     <van-overlay :show="loadingShow" class="loadingShow">
@@ -976,6 +969,7 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from "vuex";
   import $ from 'jquery'
   import YSB from '@/util/YSB' //YSB数据
   export default {
@@ -986,7 +980,6 @@
         result:[],
         betNum:'',
         betShow:false,
-        show:false,
         betSelectorShow:false,
         sortButton:true,
         pkButton:false,
@@ -1127,7 +1120,6 @@
         projectName:'',
         refreshTime:5,
         refreshTimeObj:null,
-        userData:JSON.parse(localStorage.getItem('userData')),
 
         CompetitionData:[],//非热门
         HotSportData:[],//热门
@@ -1243,14 +1235,13 @@
       //检查是否为已注册（第三方）
       // this.checkUserRegister()
     },
-    destroyed () {
-
+    computed : {
+      ...mapState(["uData"]),
+      userData(){
+        return this.uData
+      },
     },
     activated(){
-      if(this.$store.state.refresh){
-        console.log('刷新')
-        window.location.reload()
-      }
       this.show=false
       this.getSportTypeConfig()
     },
@@ -2265,20 +2256,6 @@
         this.betDetailShow=true
         // this.loadingShow=true
       },
-      //跳转到投注记录
-      toBetRecord(type){
-        this.show=true
-        let query=this.$route.query
-        query.typeId=type
-        query.i=7
-        query.redirect=this.$route.path
-        setTimeout(() => {
-          this.$router.push({
-            path:'/betRecord',
-            query: query
-          })
-        }, 200);
-      },
       //点击刷新
       Refresh(){
         this.showBoxF()
@@ -2303,20 +2280,6 @@
         }else {
           obj.classList.add("div1")
           this.pkButton=true
-        }
-      },
-      //返回按钮
-      goBack(){
-        if(this.betDetailShow){
-          this.betDetailShow=false;
-        }else{
-          this.$store.state.redirect='bet'
-          this.$router.push({
-            path:'/',
-            query: {
-              redirect:this.$route.path
-            }
-          })
         }
       },
       //top下拉选择器

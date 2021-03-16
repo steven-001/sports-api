@@ -11,10 +11,8 @@ Vue.use(Vuex);
 // it will auto require all vuex module from modules file
 
 const state = {
-  score:10000,
-  agentUrl:'',
-  agentId:229,
-  allGameList:{},
+  score:10000,//当前金币数
+  agentId:229,//业主ID
   betObj:[],//串关下注list
   //体育首页菜单数据
   DataNum:{
@@ -23,18 +21,13 @@ const state = {
     zpNum:0,
     cgNum:0,
   },
-  menuBoj:{},
-  gqData:[],
-  fgqData:[],
-  newBetData:{},
-  //体育菜单
-  sportsType:[],
-  refresh:null,
-  redirect:'',
-  YsbUrl:'',
-  checkUrlType:sessionStorage.getItem('checkUrlType')||0,
-  STWHstatus:false,
-  imgUrl:'',
+  menuBoj:{},//解析前的体育数据
+  gqData:[],//当前滚球数据
+  fgqData:[],//当前非滚球数据
+  newBetData:{},//最新推送体育数据
+  sportsType:[],//体育菜单(已解析)
+  YsbUrl:'',//体育SDK地址
+  uData:JSON.parse(localStorage.getItem('userData'))||{},//用户信息
 }
 
 const store = new Vuex.Store({
@@ -88,6 +81,11 @@ const store = new Vuex.Store({
       }
     },
   },
+  actions:{
+    onShow({commit,state},params){
+
+    },
+  }
  
 })
 

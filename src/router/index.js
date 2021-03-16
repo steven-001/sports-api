@@ -32,7 +32,7 @@ export default new Router({
       }]
     },
     {
-      path: '/demo',//聊天
+      path: '/demo',//聊天demo
       name:'demo',
       component:demo,
     },
