@@ -11,7 +11,7 @@ Vue.use(Vuex);
 // it will auto require all vuex module from modules file
 
 const state = {
-  money:10000,
+  score:10000,
   agentUrl:'',
   agentId:229,
   allGameList:{},
