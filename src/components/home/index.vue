@@ -2516,13 +2516,13 @@
     right: 50px;
   }
   .Box_title{
-    background-color: #454545;
+    background-color: #fff;
     font-weight: bold;
-    color: #c2c2c2;
+    color: #000;
     font-size: 13.5px;
     height: 25px;
     line-height: 25px;
-    border-bottom: 2px solid #383838;
+    border-bottom: 2px solid #c2c2c2;
   }
   .Box_title_top{
     font-size: 14px;
@@ -2545,7 +2545,7 @@
     text-overflow:ellipsis;
     white-space: nowrap;
     div{
-      background-color: #383838;
+      background-color: #c2c2c2;
       padding: 3px 0;
     }
   }
