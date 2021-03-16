@@ -8,8 +8,8 @@
           <img src="../../assets/首页/logo.png"/>
         </div>
         <div class="home_bet_logo_right">
-          <span @click="toLogin">登录</span>
-          <span @click="toZhuCe">注册</span>
+          <!--<span @click="toLogin">登录</span>-->
+          <!--<span @click="toZhuCe">注册</span>-->
         </div>
       </van-row>
       <!--tab今日 早盘 滚球 串关-->
