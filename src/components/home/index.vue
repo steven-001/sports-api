@@ -2441,9 +2441,9 @@
   .home_bet{
     .home_bet_logo{
       font-size: 13px;
-      background-color: #171717;
+      background-color: #fff;
       height: 38px;
-      color: #fff;
+      color: #000;
       z-index: -1;
       .logo{
         img{
