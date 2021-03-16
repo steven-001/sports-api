@@ -2915,7 +2915,7 @@
       .box1_body_min_right{
         .my-swipe .van-swipe-item {
           height: 180px;
-          color: #c2c2c2;
+          color: #000;
           font-size: 10px;
           text-align: center;
         }
