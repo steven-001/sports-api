@@ -617,7 +617,7 @@
       position="bottom"
       :style="{ height: '100%' }"
     >
-      <div class="title" style="background-color: #171717">{{ $t('new[\'选择联赛\']') }}</div>
+      <div class="title">{{ $t('new[\'选择联赛\']') }}</div>
       <form action="/">
         <van-search
           v-model="value"
@@ -630,8 +630,8 @@
           @input="onSearch"
         />
       </form>
-      <van-index-bar :index-list="selectList3" style="height: 70vh;overflow: auto;background-color: #000000">
-        <van-row type="flex" justify="space-between" style="background-color: #242424">
+      <van-index-bar :index-list="selectList3" style="height: 70vh;overflow: auto;">
+        <van-row type="flex" justify="space-between">
           <div style="font-size: 18px;line-height: 1rem;height: 1rem;margin: 0 0.5rem">
             <span v-if="selectBetData.show">{{ $t('new[\'未搜索到相关内容\']') }}</span>
           </div>
@@ -643,7 +643,7 @@
           </van-cell>
         </van-row>
         <div v-for="(k,i) in selectList1" :key="i" v-show="selectListShow(k)">
-          <van-index-anchor :index="k.letter" style="background-color: #383838"/>
+          <van-index-anchor :index="k.letter"/>
           <van-cell :title="n.name"  v-for="(n,j) in k.list" :key="j" v-show="n.show" @click="selectBetShowF(n)">
             <!-- 使用 right-icon 插槽来自定义右侧图标 -->
             <template #right-icon>
@@ -2712,7 +2712,7 @@
         font-size: 15px;
       }
       .van-search__action{
-        color: #c2c2c2;
+        color: #000;
       }
     }
     /*设置菜单*/
@@ -2978,16 +2978,16 @@
     }
     .Competition{
       .van-search{
-        background-color: #383838;
+        background-color: #c2c2c2;
         .van-search__content{
-          background-color: #242424;
+          background-color: #fff;
           .van-icon-search{
-            color: white;
+            color: #000;
           }
         }
       }
       .selectBetShow{
-        color: white;
+        color: #000;
         line-height: inherit;
         margin-right: 0.5rem;
         font-size: 0.5rem !important;
