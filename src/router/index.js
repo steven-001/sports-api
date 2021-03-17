@@ -8,6 +8,7 @@ const live = r => require.ensure([], () => r(require('@/components/live/index'))
 const demo = r => require.ensure([], () => r(require('@/components/live/demo')), 'demo')
 const betRecord = r => require.ensure([], () => r(require('@/components/betRecord/index')), 'betRecord')
 const my = r => require.ensure([], () => r(require('@/components/my/index')), 'my')
+const events = r => require.ensure([], () => r(require('@/components/events/index')), 'events')
 
 
 Vue.use(Router)
@@ -15,57 +16,18 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/', //首页 投注
+      path: '/',
       component: index,
-      children :[{
-        path:'',
-        name:'首页',
-        component:home,
-      }]
+      children :[
+        { path:'/', name:'首页', component:home,},
+        { path:'events', name:'赛事', component:events,},
+        { path:'betRecord', name:'投注记录', component:betRecord,},
+        { path:'my', name:'我的', component:my,}
+      ]
     },
-    {
-      path: '/my', //我的
-      component: index,
-      children :[{
-        path:'',
-        name:'我的',
-        component:my,
-      }]
-    },
-    {
-      path: '/betRecord', //投注记录
-      component: index,
-      children :[{
-        path:'',
-        name:'投注记录',
-        component:betRecord,
-      }]
-    },
-    {
-      path: '/service', //客服
-      component: index,
-      children :[{
-        path:'',
-        name:'客服',
-        component:service,
-      }]
-    },
-    {
-      path: '/demo',//聊天demo
-      name:'demo',
-      component:demo,
-    },
-    {
-      path: '/live',//直播
-      name:'live',
-      component:live,
-    },
-    {
-      path: '/betRecord', //投注记录
-      name:'betRecord',
-      meta:{isLogin:true},
-      component:betRecord,
-    },
+    { path: '/service',name:'客服', component:service,},
+    { path: '/demo',demoname:'聊天',component:demo,},
+    { path: '/live',name:'直播',component:live,},
   ],
   // mode:"history"
 })
