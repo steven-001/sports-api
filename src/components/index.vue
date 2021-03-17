@@ -6,11 +6,14 @@
           <router-view></router-view>
         </keep-alive>
       </div>
+      <homeFooter></homeFooter>
     </div>
 </template>
 <script>
+  import homeFooter from "./footer/footer"
 export default {
   name: "index",
+  components: { homeFooter },
   data() {
     return {
 
@@ -27,7 +30,6 @@ export default {
 
 <style lang="scss" scoped>
   .home{
-    background-color: #0F0F0F;
     height: 100vh;
   }
 

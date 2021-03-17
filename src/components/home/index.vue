@@ -522,21 +522,6 @@
       </van-collapse-item>
     </van-collapse>
 
-    <!--底部导航栏-->
-    <!--<van-tabbar :fixed="true" route-->
-                <!--:safe-area-inset-bottom="false"-->
-                <!--v-if="!betSelectorShow"-->
-                <!--v-show="actives.length==0&&!betDetailShow"-->
-                <!--style="z-index: 2043;text-align: center;background-color: #171717"-->
-                <!--active-color="#D9BB9B"-->
-                <!--inactive-color="#B3BBD1">-->
-      <!--<van-tabbar-item :icon="require('@/assets/首页/bet/zq_tab_list_truta.png')" @click="courseShow=true">{{ $t("bet['盘口教程']") }}</van-tabbar-item>-->
-      <!--&lt;!&ndash;<van-tabbar-item :icon="require('@/assets/首页/bet/zq_tab_list_normal.png')" @click="setupMenuShow=!setupMenuShow">{{ $t("bet['设置菜单']") }}</van-tabbar-item>&ndash;&gt;-->
-      <!--<van-tabbar-item :icon="require('@/assets/首页/bet/zq_tab_nosettle_normal.png')" @click="toBetRecord('Pending')">{{ $t("bet['未结注单']") }}</van-tabbar-item>-->
-      <!--<van-tabbar-item :icon="require('@/assets/首页/bet/zq_tab_settle_normal.png')" @click="toBetRecord('Proces')">{{ $t("bet['已结注单']") }}</van-tabbar-item>-->
-      <!--<van-tabbar-item :icon="require('@/assets/首页/bet/tz_tab_refresh_normal.png')" @click="Refresh">{{ $t("bet['刷新']") }}</van-tabbar-item>-->
-    <!--</van-tabbar>-->
-
     <!--一键投注-->
     <van-popup class="betkaiguanShow" v-model="betkaiguanShow"
                overlay-class="betkaiguanShowOverlay"

@@ -3,6 +3,8 @@ module.exports = {
     name: 'English'
   },
   new2:{
+    '大厅':'Home',
+    '赛事':'Events',
     '其他娱乐':'Other Game',
     '热门游戏':'Popular Game',
     '线路切换成功':'The line has been switched successfully.',

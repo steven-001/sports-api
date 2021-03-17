@@ -77,18 +77,10 @@
         pageIndex:0,
         pageSize:10,
         total:0,
-        type:7,
+        type:0,
         userData:JSON.parse(localStorage.getItem('userData')),
         totalNum:{},
       }
-    },
-    watch: {
-      typeId(n,o){
-        if(n==7){
-          this.changeLoad()
-          this.getBettingRecordTotal()
-        }
-      },
     },
     created(){
       let date = new Date()
@@ -97,7 +89,7 @@
       this.getBettingRecordTotal()
     },
     mounted(){
-
+      console.log(this.typeId)
     },
     methods:{
       getDate(){
@@ -195,7 +187,6 @@
   }
 
   .betRecord{
-    background-color: #000000;
     .status_bar{
       height: 20px;
     }
@@ -212,7 +203,6 @@
           width:100px;
           height: 25px;
           border-radius: 5px;
-          background-color: #171717;
           border: 1px solid #383838;
           text-align: right;
           i{
@@ -230,12 +220,12 @@
           background-color: #1367BC;
           padding: 5px 10px;
           border-radius: 5px;
+          color: #fff;
         }
       }
       .title{
         text-align: center;
         font-size: 12px;
-        background-color: #171717;
         div{
           width: 16%;
           padding: 2%;
@@ -254,10 +244,9 @@
     .totalNum{
       width: 90%;
       font-size: 13px;
-      background-color: #171717;
       padding: 10px 5%;
       position: fixed;
-      bottom: 0px;
+      bottom: 53px;
     }
   }
 </style>
@@ -269,11 +258,5 @@
     .van-collapse-item__content{
       background-color: #f0f0f0;
     }
-  }
-  .van-calendar{
-    background-color: #242424 !important;
-  }
-  .van-calendar__month-mark{
-    color: #171717 !important;
   }
 </style>

@@ -3,6 +3,8 @@ module.exports = {
   "name": "马来语"
 },
   "new2": {
+    '大厅':'Home',
+    '赛事':'Events',
     '其他娱乐':'Other Game',
     '热门游戏':'Popular Game',
     '请不要重复操作':'Please do not repeat the operation',
