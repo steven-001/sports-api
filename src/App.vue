@@ -7,7 +7,6 @@
 </template>
 
 <script>
-  import YSB from './util/YSB' //YSB数据
   export default {
     name: 'App',
     data() {
@@ -16,9 +15,7 @@
       }
     },
     created(){
-      //获取体育菜单
-      YSB.onMenu(this.$i18n.locale)
-      // YSB.onHot(this.$i18n.locale)
+
     },
     methods: {
 

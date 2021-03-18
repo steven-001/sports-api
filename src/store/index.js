@@ -21,7 +21,7 @@ const state = {
     zpNum:0,
     cgNum:0,
   },
-  menuBoj:{},//解析前的体育数据
+  menuBoj:[],//解析前的体育数据
   gqData:[],//当前滚球数据
   fgqData:[],//当前非滚球数据
   newBetData:{},//最新推送体育数据
@@ -54,34 +54,35 @@ const store = new Vuex.Store({
     onMenu(state,data){
       if(data.normal.length>0){
         state.menuBoj=data.normal
-        let zpNum=0
-        let jrNum=0
-        let gqNum=0
-        let cgNum=0
-        for (let k of data.normal){
-          if(k.sportType!='financial'&&k.sportType!="horseracing"&&k.sportType!="greyhounds"&&k.sportType!="lotto"&&k.sportType!="others"){
-            if(k.earlyCount){
-              // zpNum+=k.earlyCount//早盘
-            }
-            if(k.todayCount){
-              jrNum+=k.todayCount//今日
-            }
-            if(k.totalCount){
-              cgNum+=k.totalCount//串关
-            }
-            if(k.isLive){
-              gqNum+=k.totalCount//滚球
-            }
-          }
-        }
-        state.DataNum.zpNum=zpNum
-        state.DataNum.jrNum=jrNum
-        state.DataNum.gqNum=gqNum
-        state.DataNum.cgNum=cgNum
+      //   let zpNum=0
+      //   let jrNum=0
+      //   let gqNum=0
+      //   let cgNum=0
+      //   for (let k of data.normal){
+      //     if(k.sportType!='financial'&&k.sportType!="horseracing"&&k.sportType!="greyhounds"&&k.sportType!="lotto"&&k.sportType!="others"){
+      //       if(k.earlyCount){
+      //         // zpNum+=k.earlyCount//早盘
+      //       }
+      //       if(k.todayCount){
+      //         jrNum+=k.todayCount//今日
+      //       }
+      //       if(k.totalCount){
+      //         cgNum+=k.totalCount//串关
+      //       }
+      //       if(k.isLive){
+      //         gqNum+=k.totalCount//滚球
+      //       }
+      //     }
+      //   }
+      //   state.DataNum.zpNum=zpNum
+      //   state.DataNum.jrNum=jrNum
+      //   state.DataNum.gqNum=gqNum
+      //   state.DataNum.cgNum=cgNum
       }
     },
   },
   actions:{
+    //刷新金币
     onShow({commit,state},params){
 
     },
