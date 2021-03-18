@@ -151,6 +151,7 @@
         },1000)
       },
       changeBetType(){// tab今日 早盘 滚球 串关
+        console.log(this.betType)
         // if(this.betType==0){
         //   console.log('今日')
         //   // this.gqID==''?'':YSB.onLive(this.gqID,this.$i18n.locale)
