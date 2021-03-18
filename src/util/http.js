@@ -42,7 +42,7 @@ let HOST = process.env.HOST;
 
 if(HOST === 'test'){                      //npm run build -- test 内网测试
   axios.defaults.baseURL = 'http://10.14.2.217:9000/api'
-  store.commit("setURL",'http://110.74.166.21:8099/service')
+  store.commit("setURL",'http://103.249.87.33/service')
   store.state.VI='123'
   store.state.Secret='abc'
 }
@@ -75,7 +75,7 @@ function setUrl() {
         setUrl()
       },100)
     }
-    store.commit("setURL",'http://110.74.166.21:8099/service')
+    store.commit("setURL",'http://103.249.87.33/service')
     store.state.VI='123'
     store.state.Secret='abc'
   }
@@ -84,7 +84,7 @@ setUrl()
 
 if(HOST === 'dev'){
   axios.defaults.baseURL = 'https://wapp01k4yen.hnqzy168.com/api'
-  store.commit("setURL",'http://110.74.166.21:8099/service')
+  store.commit("setURL",'http://103.249.87.33/service')
   store.state.VI='123'
   store.state.Secret='abc'
 }
