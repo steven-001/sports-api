@@ -56,7 +56,6 @@ export default {
       console.log(data, type, "新滚球数据");
       store.commit("getgq", data)
     });
-    live.disconnect();
   },
   onOnLive(id,locale){//非滚球
     //默认英语
