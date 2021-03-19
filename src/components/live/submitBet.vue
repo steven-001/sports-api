@@ -6,7 +6,7 @@
     <div class="submitBet_body">
       <div class="submitBet_body_title">
         <span>//</span>
-        <b>葡萄牙超级联赛</b>
+        <b>{{ betData.leagueName }}</b>
         <span>//</span>
       </div>
       <div class="submitBet_body_name">
@@ -15,12 +15,12 @@
         <span>{{ betData.guest }}</span>
       </div>
       <div class="submitBet_body_content">
-        <div>{{ betData.name }}{{ betData.Fraction }}@<b>{{ betData.odds }}</b></div>
-        <div>{{ betData.typeName }}</div>
+        <div>{{ betData.name }}<br>{{ betData.Fraction }}@<b>{{ betData.odds }}</b></div>
+        <div>{{ getTypeName(betData.betType) }}</div>
       </div>
       <div class="submitBet_body_input">
         <van-row type="flex" justify="space-between" align="center" class="submitBet_body_input_top">
-          <div>余额：<b>{{ $store.state.money }}</b></div>
+          <div>余额：<b>{{ money }}</b></div>
           <div>下注限额：<b>{{ quota }}</b></div>
         </van-row>
         <van-field v-model="num" :placeholder="`下注最低限额：${quota}元`" type="number">
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from "vuex";
   export default {
     data() {
       return {
@@ -60,6 +61,15 @@
         quota:100,
         numList:[100,500,1000,2000,5000],
       }
+    },
+    computed:{
+      ...mapState(["score","AllType"]),
+      money(){
+        return this.score
+      },
+      simplexData(){
+
+      },
     },
     mounted() {
 
@@ -94,6 +104,10 @@
         this.betData=data
         this.submitBetShow=true
       },
+      getTypeName(name){
+        if(name)
+        return this.AllType.filter(k=>{ return k.type.toLowerCase()==name.toLowerCase()})[0].name
+      },
     }
   }
 </script>
@@ -125,7 +139,7 @@
         font-size: 12px;
         b{
           display: inline-block;
-          width: 50px;
+          width: 30px;
         }
       }
       .submitBet_body_content{

@@ -9,7 +9,7 @@
              muted
              webkit-playsinline='true'
              playsinline='true'
-             src="https://jinlong-prd.oss-accelerate.aliyuncs.com/rmb/jinlong/mp4_cs2.mp4">
+             src="https://jinlong-prd.oss-accelerate.aliyuncs.com/rmb/jinlong/2021-03-18 18-32-41.mp4">
       </video>
     </div>
   </div>
@@ -97,7 +97,7 @@
     position: relative;
     #play-video{
       width: 100%;
-      height: 100%;
+      /*height: 100%;*/
       z-index: -999;
     }
   }

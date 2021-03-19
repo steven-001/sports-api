@@ -42,17 +42,17 @@
       </van-tab>
     </van-tabs>
     <!--tab体育项目-->
-    <van-tabs v-model="sportTabs"
-              @change=""
+    <van-tabs v-model="sportCode"
+              @change="changeSpotsType"
               line-width="0"
               :ellipsis="false"
               title-active-color="#404656"
               title-inactive-color="#A4A9B4"
               class="home_bet_sportTabs">
-      <van-tab v-for="(k,i) in sportsTabs" :key="i" :name="k.gameCode">
+      <van-tab v-for="(k,i) in sportsTabs" :key="i" :name="k.gameCode" v-if="k[onCount]>0">
         <div slot="title">
           <div class="icon">
-            <img :src="require(`../../assets/首页/bet/ico/${k.gameCode==sportTabs?k.gameCode:k.gameCode+'1'}.png`)"/>
+            <img :src="require(`../../assets/首页/bet/ico/${k.gameCode==sportCode?k.gameCode:k.gameCode+'1'}.png`)"/>
             <div>({{ k[onCount] }})</div>
           </div>
           <div class="text">
@@ -69,13 +69,20 @@
       </div>
       <div class="xuanzhe">{{ $t('bet[\'赛事选择\']') }}</div>
     </van-row>
+    <!--进行中、未开赛-->
+    <sportDetails/>
+    <!--单式投注-->
+    <submitBet ref="submitBet"/>
   </div>
 </template>
 
 <script>
   import { mapState, mapActions } from "vuex";
+  import sportDetails from "./sportDetails";
+  import submitBet from "../live/submitBet";
   import YSB from '@/util/YSB' //YSB数据
   export default {
+    components:{sportDetails,submitBet},
     data() {
       return {
         refreshLoad:false,
@@ -87,7 +94,7 @@
         ],
         betType:null,
         sportsType:[],
-        sportTabs:null,
+        sportCode:null,
         dateList:[
           { text: '全部', value: 0 },
           { text: '3/05', value: 1 },
@@ -142,6 +149,14 @@
       this.onRefreshLoad()
       this.getSportTypeConfig()
     },
+    mounted(){
+      let time = setInterval(()=>{
+        if(this.sportsTabs.length>0){
+          clearInterval(time)
+          this.changeBetType()
+        }
+      },100)
+    },
     methods:{
       ...mapActions(["onShow"]),
       onRefreshLoad(){//刷新金币
@@ -151,22 +166,35 @@
         },1000)
       },
       changeBetType(){// tab今日 早盘 滚球 串关
-        console.log(this.betType)
-        // if(this.betType==0){
-        //   console.log('今日')
-        //   // this.gqID==''?'':YSB.onLive(this.gqID,this.$i18n.locale)
-        //   this.fgqID==''?'':YSB.onOnLive(this.fgqID+'-0',this.$i18n.locale)
-        // }else if(this.betType==1){
-        //   console.log('早盘')
-        //   this.fgqID==''?'':YSB.onOnLive(this.fgqID+'-',this.$i18n.locale)//只能获取所有非滚球
-        // }else if(this.betType==2){
-        //   console.log('滚球')
-        //   this.gqID==''?'':YSB.onLive(this.gqID,this.$i18n.locale)
-        // } else if(this.betType==3){
-        //   console.log('串关')
-        //   this.gqID==''?'':YSB.onLive(this.gqID,this.$i18n.locale)
-        //   this.fgqID==''?'':YSB.onOnLive(this.fgqID+'-',this.$i18n.locale)
-        // }
+        if(this.betType==0){
+          let arr=this.sportsTabs.filter(k=>{ return k.todayCount>0})[0]
+          this.sportCode=arr.gameCode
+          this.changeSpotsType()
+        }else if(this.betType==1){
+          let arr=this.sportsTabs.filter(k=>{ return k.fgqCount>0})[0]
+          this.sportCode=arr.gameCode
+          this.changeSpotsType()
+        }else if(this.betType==2){
+          let arr=this.sportsTabs.filter(k=>{ return k.gqCount>0})[0]
+          this.sportCode=arr.gameCode
+          this.changeSpotsType()
+        } else if(this.betType==3){
+          // this.gqID==''?'':YSB.onLive(this.gqID,this.$i18n.locale)
+          // this.fgqID==''?'':YSB.onOnLive(this.fgqID+'-',this.$i18n.locale)
+        }
+      },
+      changeSpotsType(){
+        this.$store.commit("getgq", [])
+        this.$store.commit("getfgq", [])
+        let data = this.sportsTabs.filter(k=>{ return k.gameCode==this.sportCode})[0]
+        if(this.betType==0){
+          YSB.onNoLive(data.fgqId+'-0',this.$i18n.locale)
+        }else if(this.betType==1){
+          YSB.onNoLive(data.fgqId+'-',this.$i18n.locale)//只能获取所有非滚球
+        }else if(this.betType==2){
+          YSB.onLive(data.gqId,this.$i18n.locale)
+        } else if(this.betType==3){
+        }
       },
       getSportTypeConfig(){//获取体育赛事Type
         this.$ajax.get('/game/getSportTypeConfig?agentId='+this.$store.state.agentId
@@ -175,6 +203,9 @@
             this.sportsType=res.data
           }
         })
+      },
+      showSubmit(data){
+        this.$refs.submitBet.onInitialize(data)
       },
     },
   };

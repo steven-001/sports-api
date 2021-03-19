@@ -11,9 +11,9 @@
             <div class="live_top_left_title_zan">5062</div>
           </div>
         </van-row>
-        <van-row type="flex" justify="space-between" class="live_top_centre" align="center">
+        <van-row type="flex" justify="space-between" class="live_top_centre" align="center" @click="top_body_show=true">
           <div>多特蒙德 VS 亚特兰大联</div>
-          <!--<img src="@/assets/live/xia.png"  class="live_top_centre_img"/>-->
+          <img src="@/assets/live/xia.png"  class="live_top_centre_img"/>
         </van-row>
         <div class="live_top_right" @click="onExit()">
           <img src="@/assets/live/exit.png"/>
@@ -39,6 +39,7 @@
           <img src="@/assets/live/volume.png" @click="onVolume"/>
         </van-row>
         <van-row type="flex" class="chat_body_bottom_box2" align="center">
+          <img src="@/assets/live/shenying.png" class="shenying"/>
           <div class="chat_body_bottom_box2_input">
             <van-field v-model="text" maxlength="25"
                        @keyup.enter="submit" placeholder="聊点什么...">
@@ -92,7 +93,7 @@
             <img class="jinbi" src="@/assets/live/liwu/jinbi.png" @click=""/>
             <div class="num">{{ $store.state.money }}</div>
             <!--<div class="chongzhi">-->
-              <!--充值>-->
+            <!--充值>-->
             <!--</div>-->
           </van-row>
           <div class="liwuShow_body_bottom_right">
@@ -117,6 +118,11 @@
     components: { player_box,Chat,TabControl,submitBet },
     data() {
       return {
+        teamData:[
+          {homeName:'多特蒙德',awayName:'亚特兰大联',score:'0-2',time:'上半场 20:10'},
+          {homeName:'多特蒙德',awayName:'亚特兰大联',score:'0-2',time:'上半场 02:07'},
+          {homeName:'多特蒙德',awayName:'亚特兰大联',score:'0-2',time:'下半场 10:10'},
+        ],
         navId:1,
         liwuId:1,
         liwuList:[
@@ -324,7 +330,7 @@
         bottom: 0px;
         .chat_body_bottom_box1{
           padding: 5px;
-          height: 38px;
+          height: 25px;
           img{
             margin-right: 10px;
             height: 100%;
@@ -332,8 +338,15 @@
         }
         .chat_body_bottom_box2{
           padding: 0 10px;
+          .shenying{
+            height: 25px;
+            margin-right: 5px;
+          }
           .chat_body_bottom_box2_input{
             width: 60%;
+            #placeholder{
+              font-size: 11px;
+            }
             .van-cell{
               border-radius: 50px;
               padding: 0px 10px;
@@ -349,7 +362,7 @@
                   margin-top: 5px;
                   position: relative;
                   left: 5px;
-                  height: 28px;
+                  height: 15px;
                 }
               }
             }
@@ -360,7 +373,7 @@
             img{
               position: relative;
               top: 3px;
-              height: 35px;
+              height: 25px;
             }
           }
         }
@@ -406,10 +419,10 @@
         }
         .live_top_centre{
           padding: 0 10px;
-          width: 43%;
+          width: 46%;
           height: 35px;
           border-radius: 50px;
-          /*border:1px solid rgba(255, 255, 255, 0.51);*/
+          border:1px solid rgba(255, 255, 255, 0.51);
           .live_top_centre_img{
             height: 6px;
           }

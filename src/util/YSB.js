@@ -21,8 +21,6 @@ export default {
           if(data.normal.length&&data.normal.length>0){
             console.log(data.normal,'刷新菜单！')
             store.commit("onMenu", data)
-          }else {
-            _this.menu_getDataOut()
           }
         });
       }, 30000);
@@ -45,7 +43,9 @@ export default {
   onLive(id,locale){//滚球
     //默认英语
     let yy=this.locale.indexOf(locale)>-1?locale:1
-    const live = new YSB.YSBSignalR(store.state.YsbUrl, store.state.VI,store.state.Secret, id, 1, yy);
+    live?live.disconnect():'';
+    console.log('断开滚球')
+    var live = new YSB.YSBSignalR(store.state.YsbUrl, store.state.VI,store.state.Secret, id, 1, yy);
     live.startConnection().then(function () {
       live.getData("2").then(function (data) {
         console.log(data, '滚球sport_id：'+id);
@@ -56,31 +56,22 @@ export default {
       console.log(data, type, "新滚球数据");
       store.commit("getgq", data)
     });
-    live.disconnect();
   },
-  onOnLive(id,locale){//非滚球
+  onNoLive(id,locale){//非滚球
     //默认英语
     let yy=this.locale.indexOf(locale)>-1?locale:1
-    const nonLive = new YSB.YSBSignalR(store.state.YsbUrl, store.state.VI,store.state.Secret, id, 2, yy);
-    nonLive.startConnection().then(function () {
-      nonLive.getData("2").then(function (data) {
+    noLive?noLive.disconnect():'';
+    console.log('断开非滚球')
+    var noLive = new YSB.YSBSignalR(store.state.YsbUrl, store.state.VI,store.state.Secret, id, 2, yy);
+    noLive.startConnection().then(function () {
+      noLive.getData("2").then(function (data) {
         console.log(data, '非滚球sport_id：'+id);
         store.commit("getfgq", data)
       });
     });
-    nonLive.on("NewData", function (data, type) {
+    noLive.on("NewData", function (data, type) {
       console.log(data, type, "新非滚球数据");
       store.commit("getfgq", data)
-    });
-  },
-  onHot(locale){
-    //默认英语
-    let yy=this.locale.indexOf(locale)>-1?locale:1
-    const nonLive = new YSB.YSBSignalR(store.state.YsbUrl, store.state.VI,store.state.Secret, "soccer", 4, yy);
-    nonLive.startConnection().then(function () {
-      nonLive.getData("2").then(function (data) {
-        console.log(data, "hot");
-      });
     });
   },
 }

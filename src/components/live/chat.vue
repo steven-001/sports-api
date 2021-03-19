@@ -139,6 +139,10 @@
 <style lang="scss">
   .chat ::-webkit-scrollbar {display: none;}
   .chat{
+    position: relative;
+    left: -8%;
+    top: 0vw;
+    transform: scale(0.8);
     height: 100%;
     padding: 0 10px;
     width: 70%;
@@ -146,14 +150,17 @@
       height: 40px;
     }
     .chat_top{
+      position: relative;
+      left: -6%;
+      transform: scale(0.85);
       overflow-y: auto;
-      height: 88px;
+      height: 92px;
       margin-bottom: 5px;
       .chat_top_box{
         width: 65%;
         border-radius: 50px;
         background-color: rgba(0, 0, 0, 0.47);
-        margin: 4px 0;
+        margin: 8px 0;
         .chat_top_box_text{
           margin: 0 5px;
           padding: 2px 0;
@@ -190,7 +197,7 @@
     }
     .chat_bottom{
       overflow-y: auto;
-      height: calc(100% - 100px);
+      height: calc(100% - 50px);
       line-height: 13px;
       .chat_bottom_box{
         display: inline-block;
