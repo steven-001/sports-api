@@ -11,6 +11,7 @@ import './util/http';
 import Vant from 'vant';
 import 'amfe-flexible';//自适应插件
 import 'vant/lib/index.css';
+import './assets/css/common.scss';
 import { Lazyload } from 'vant';
 import base64 from "./util/base64";
 
