@@ -3,6 +3,7 @@ import Router from 'vue-router';
 
 const index = r => require.ensure([], () => r(require('@/components/index')), 'index')
 const home = r => require.ensure([], () => r(require('@/components/home/index')), 'home')
+const generalBet = r => require.ensure([], () => r(require('@/components/home/generalBet')), 'generalBet')
 const live = r => require.ensure([], () => r(require('@/components/live/index')), 'live')
 const demo = r => require.ensure([], () => r(require('@/components/live/demo')), 'demo')
 const betRecord = r => require.ensure([], () => r(require('@/components/betRecord/index')), 'betRecord')
@@ -24,8 +25,9 @@ export default new Router({
         { path:'my', name:'我的', component:my,}
       ]
     },
+    { path: '/generalBet',name:'generalBet',component:generalBet,},//投注页
     { path: '/demo',demoname:'聊天',component:demo,},
-    { path: '/live',name:'直播',component:live,},
+    { path: '/live',name:'live',component:live,},
   ],
   // mode:"history"
 })

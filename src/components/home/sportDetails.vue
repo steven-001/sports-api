@@ -18,13 +18,19 @@
               <img :src="require(`../../assets/首页/bet/asdas.png`)"/>
             </div>
           </van-row>
+          <!--判断是否有直播-->
           <van-row type="flex" justify="space-between" align="center" class="score" v-if="n.liveStream">
             <span>{{ n.homeName }}</span>
             <span>{{ n.score }}</span>
             <span>{{ n.awayName }}</span>
           </van-row>
           <van-row type="flex" justify="space-between" class="league_box_content_mini">
-            <div class="left box">
+            <div class="left box" @click="" @click="to_live((i==1?ongoing:notStart),k,n.parentId)" v-if="n.liveStream">
+              <div style="height: 100%;text-align: center">
+                <img :src="require('../../assets/live/anchor/image1.png')"/>
+              </div>
+            </div>
+            <div class="left box" @click="to_generalBet(i==1,k,n.parentId)" v-else>
               <div style="height: 100%">
                 <van-row type="flex" justify="space-between" align="center" class="left_score">
                   <span>{{ n.homeName }}</span>
@@ -44,9 +50,9 @@
               <van-swipe class="right-swipe" indicator-color="#BBC3E4" :stop-propagation="false">
                 <van-swipe-item v-for="(m,o) in n.sessions" :key="o">
                   <van-row type="flex" justify="space-between" align="center" class="right_top">
-                    <div>{{ onJoint(m.session) }}{{ $t('bet[\'独赢\']') }}</div>
-                    <div>{{ onJoint(m.session) }}{{ $t('bet[\'让球\']') }}</div>
-                    <div>{{ onJoint(m.session) }}{{ $t('bet[\'大/小\']') }}</div>
+                    <div>{{ jointList[m.session] }}{{ $t('bet[\'独赢\']') }}</div>
+                    <div>{{ jointList[m.session] }}{{ $t('bet[\'让球\']') }}</div>
+                    <div>{{ jointList[m.session] }}{{ $t('bet[\'大/小\']') }}</div>
                   </van-row>
                   <van-row type="flex" justify="space-between" class="right_bottom">
                     <div :class="{'right-swipe_box1':l==0,'right-swipe_box2':l!=0}" v-for="(itme,l) in rightData" :key="l">
@@ -98,10 +104,6 @@
 
     },
     methods: {
-      //判断球接类型
-      onJoint(i){
-        return this.jointList[i]
-      },
       //投注卡上锁
       onLock(obj){
         if(obj&&obj.selectionPrice>1&&obj.selectionStatus =='a'){
@@ -127,12 +129,34 @@
         }
         this.$parent.showSubmit(data);
       },
+      to_generalBet(isLive,item,parentId){
+        console.log('---------',item)
+        this.$router.push({
+          path:"generalBet",
+          query:{
+            isLive:isLive,
+            leagueId:item.leagueId,
+            parentId:parentId,
+          }
+        })
+      },
+      to_live(item,parentId){
+        this.$router.push({
+          name:"live",
+          params:{
+            item:item,
+            parentId:parentId,
+          }
+        })
+      }
     }
   }
 </script>
 
 <style lang="scss">
   .sportDetails{
+    height: calc(100vh - 0.8rem - 1.2rem - 0.26666rem - 1.17rem - 1.0666rem);
+    overflow-y: auto;
     .sportDetails_body{
       border-top: 2px solid #DBEBFD;
       padding: 0 10px;
@@ -177,12 +201,16 @@
             background-color: #F7F8FC;
             margin-bottom: 3px;
             span{
+              font-weight: bold;
+              color: #4F82F4;
               display: inline-block;
             }
             span:first-child{
+              color: #000;
               width: 45%;
             }
             span:last-child{
+              color: #000;
               width: 45%;
             }
           }
@@ -294,6 +322,9 @@
           }
         }
       }
+    }
+    .sportDetails_body:last-child{
+      padding-bottom: 100px;
     }
     .border_top{
       border-top: 2px solid #FDDCE0;

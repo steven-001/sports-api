@@ -127,7 +127,7 @@ const state = {
 }
 
 const store = new Vuex.Store({
-  state,
+  state:sessionStorage.getItem('state') ? JSON.parse(sessionStorage.getItem('state')): state,
   mutations:{
     changeBetObj(state,betObj){
      state.betObj.push(betObj);

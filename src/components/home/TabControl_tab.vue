@@ -60,6 +60,16 @@
     data() {
       return {
         active:0,
+        tabsList:[
+          {text:'所有盘口',type:0,},
+          {text:'让球',type:1,},
+          {text:'波胆',type:2,},
+          {text:'角球',type:3,},
+          {text:'黄红牌',type:4,},
+          {text:'特殊投注',type:5,},
+          {text:'半场',type:6,},
+          {text:'节',type:7,},
+        ],
         tabControlData:{
           home:'多特蒙德',
           guest:'沙赫坤度若',

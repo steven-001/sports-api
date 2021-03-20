@@ -15,6 +15,7 @@
     </van-row>
     <!--tab今日 早盘 滚球 串关-->
     <van-tabs v-model="betType"
+              sticky
               @change="changeBetType"
               line-width="35px"
               line-height="2px"
@@ -87,12 +88,12 @@
       return {
         refreshLoad:false,
         betList:[
+          { text: '滚球', value: 2 ,type:'gqCount'},
           { text: '今日', value: 0 ,type:'todayCount'},
           { text: '早盘', value: 1 ,type:'fgqCount'},
-          { text: '滚球', value: 2 ,type:'gqCount'},
           { text: '串关', value: 3 ,type:'totalCount'},
         ],
-        betType:null,
+        betType:2,
         sportsType:[],
         sportCode:null,
         dateList:[
@@ -135,6 +136,7 @@
             return item.sportType==k.gameCode.toLowerCase()
           })
         })
+        console.log(this.sportsType.filter(k=>{ return k.gqId||k.fgqId}))
         return this.sportsType.filter(k=>{ return k.gqId||k.fgqId})
       },
       onCount(){

@@ -15,7 +15,7 @@
           <div>多特蒙德 VS 亚特兰大联</div>
           <img src="@/assets/live/xia.png"  class="live_top_centre_img"/>
         </van-row>
-        <div class="live_top_right" @click="onExit()">
+        <div class="live_top_right" @click="back">
           <img src="@/assets/live/exit.png"/>
         </div>
       </van-row>
@@ -193,8 +193,9 @@
       onLine(){
         this.$toast.success('已选择最优线路');
       },
-      onExit(){
-        this.$toast.success('退出');
+      //返回首页
+      back(){
+        this.$router.push({path: '/'})
       },
     }
   }
