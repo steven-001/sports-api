@@ -30,7 +30,7 @@
                 <img :src="require('../../assets/live/anchor/image1.png')"/>
               </div>
             </div>
-            <div class="left box" @click="to_generalBet(i==1,k,n.parentId)" v-else>
+            <div class="left box" @click="to_generalBet((i==1?ongoing:notStart),k,n.parentId)" v-else>
               <div style="height: 100%">
                 <van-row type="flex" justify="space-between" align="center" class="left_score">
                   <span>{{ n.homeName }}</span>
@@ -129,16 +129,11 @@
         }
         this.$parent.showSubmit(data);
       },
-      to_generalBet(isLive,item,parentId){
-        console.log('---------',item)
-        this.$router.push({
-          path:"generalBet",
-          query:{
-            isLive:isLive,
-            leagueId:item.leagueId,
-            parentId:parentId,
-          }
-        })
+      to_generalBet(data,item,parentId){
+        this.$store.state.allData=data
+        this.$store.state.leagueId=item.leagueId
+        this.$store.state.parentId=parentId
+        this.$router.push({path: '/generalBet'})
       },
       to_live(item,parentId){
         this.$router.push({

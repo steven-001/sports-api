@@ -3,62 +3,55 @@
         <van-tabs v-model="active" animated>
           <van-tab>
             <template #title>所有盘口</template>
-            <div class="TabControl_body_tab_content" v-for="(k,i) in tabControlData.data" :key="i">
-              <div v-for="(n,j) in k.data" :key="j">
+            <div class="TabControl_body_tab_content" v-for="(k,i) in sessionsData" :key="i">
+              <div v-for="(n,j) in k.list" :key="j">
                 <div class="box_title">
-                  {{ n.typeName }}
+                  {{ jointList[i] }} {{ locale==2?n.text:n.betType }}
                 </div>
-                <!--三个-->
-                <div class="TabControl_box" v-for="(m,x) in n.betPptions" :key="x" v-if="n.type==1" @click="showSubmit(m,m.name,n.typeName)">
-                  <span>{{ m.name }}</span>
-                  <span class="odds">{{ m.odds }}</span>
-                </div>
-                <!--多个-->
-                <div v-if="n.type==2" v-for="(m,x) in n.betPptions" :key="x" class="box2">
-                  <div class="TabControl_box">
-                    <span>{{ m.name }}</span>
-                  </div>
-                  <div class="TabControl_box" v-for="(obj,item) in m.Fraction" :key="item" @click="showSubmit(obj,m.name,n.typeName)">
-                    <span>{{ obj.Fraction }}</span>
-                    <span class="odds">{{ obj.odds }}</span>
+                <div style="width: 100%;overflow: auto">
+                  <div :class="{betSwipe:n.showType==2}">
+                    <div v-for="(m,x) in n.data" :key="x" class="TabControl_box">
+                      <div class="title">
+                        <span>{{ m.selectionName }}</span>
+                      </div>
+                      <div class="separate" @click="showSubmit(m,n.betType)">
+                        <span :class="{span1:m.displayValue!=''}">{{ m.displayValue }}</span>
+                        <span class="odds" :class="{span2:m.displayValue!=''}">{{ m.selectionPrice }}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                  <!--多个-->
+                <!--<div v-for="(m,x) in n.data" :key="x" class="box2">-->
+                  <!--<div class="TabControl_box">-->
+                    <!--<span>{{ m.selectionName }}</span>-->
+                  <!--</div><div class="TabControl_box separate" @click="showSubmit(m,n.betType)">-->
+                    <!--<span>{{ m.displayValue }}</span><span class="odds">{{ m.selectionPrice }}</span>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;三个&ndash;&gt;-->
+                <!--<div class="TabControl_box" v-for="(m,x) in n.betPptions" :key="x" v-if="n.type==1" @click="showSubmit(m,m.name,n.typeName)">-->
+                  <!--<span>{{ m.name }}</span>-->
+                  <!--<span class="odds">{{ m.odds }}</span>-->
+                <!--</div>-->
               </div>
             </div>
           </van-tab>
           <van-tab v-for="(k,i) in tabControlData.data" :key="i">
             <template #title>{{ k.text }}</template>
-            <div class="TabControl_body_tab_content">
-              <div v-for="(n,j) in k.data" :key="j">
-                <div class="box_title">
-                  {{ n.typeName }}
-                </div>
-                <!--三个-->
-                <div class="TabControl_box" v-for="(m,x) in n.betPptions" :key="x" v-if="n.type==1" @click="showSubmit(m,m.name,n.typeName)">
-                  <span>{{ m.name }}</span>
-                  <span class="odds">{{ m.odds }}</span>
-                </div>
-                <!--多个-->
-                <div v-if="n.type==2" v-for="(m,x) in n.betPptions" :key="x" class="box2">
-                  <div class="TabControl_box">
-                    <span>{{ m.name }}</span>
-                  </div>
-                  <div class="TabControl_box" v-for="(obj,item) in m.Fraction" :key="item" @click="showSubmit(obj,m.name,n.typeName)">
-                    <span>{{ obj.Fraction }}</span>
-                    <span class="odds">{{ obj.odds }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="TabControl_body_tab_content"></div>
           </van-tab>
         </van-tabs>
       </div>
 </template>
 
 <script>
+  import { mapState, mapGetters } from "vuex";
   export default {
     data() {
       return {
+        jointList:['','上半场','下半场','第一节','第二节','第三节','第四节'],
+        locale:localStorage.getItem('locale'),
         active:0,
         tabsList:[
           {text:'所有盘口',type:0,},
@@ -126,18 +119,21 @@
         },
       }
     },
+    computed:{
+      ...mapGetters(['sessionsData']),
+    },
     mounted() {
 
     },
     methods: {
-      showSubmit(obj,name,typeName){
+      showSubmit(obj,typeName){
         let data={
           home:this.tabControlData.home,
           guest:this.tabControlData.guest,
-          name:name,
-          odds:obj.odds,
-          Fraction:obj.Fraction||'',
-          typeName:typeName,
+          name:selectionName,
+          odds:obj.selectionPrice,
+          Fraction:obj.displayValue||'',
+          typeName:betType,
         }
         this.$emit('showSubmit',data)
       },
@@ -188,25 +184,35 @@
         color: #FFAA00;
       }
       .TabControl_box{
-        text-align: center;
-        line-height: 42px;
-        font-size: 13px;
         display: inline-block;
-        width: 31%;
-        background-color: #fff;
-        border-radius: 5px;
-        color: #3D3F47;
-        margin: 0 1.15%;
-      }
-      .TabControl_box:active{
-        background-color: #7c7c7c;
-      }
-      .box2{
-        line-height: 0;
-        margin-top: 5px;
-        .TabControl_box{
-          width: 21.5%;
+        font-size: 11px;
+        margin: 0 5px;
+        text-align: center;
+        min-width: 100px;
+        .title{
+          padding: 5px 10px;
         }
+        .separate{
+          line-height: 20px;
+          border-radius: 5px;
+          span{
+            display: inline-block;
+          }
+          .span1{
+            color: #828282;
+            padding-right: 10px;
+          }
+          .span2{
+            padding-left: 10px;
+          }
+        }
+      }
+      .betSwipe {
+        width: 200%;
+        /*float: left;*/
+        /*overflow-y: hidden;*/
+        /*overflow-x: auto;*/
+        /*white-space: nowrap;*/
       }
     }
   }
