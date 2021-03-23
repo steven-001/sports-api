@@ -132,7 +132,7 @@
           Fraction:obj.displayValue,
           betType:obj.betType,
         }
-        this.$parent.showSubmit(data)
+        this.$emit('showSubmit',data)
       },
       setClass(str){
         let text = ''
@@ -189,6 +189,7 @@
     .TabControl_body_tab_content{
       text-align: center;
       .box_title{
+        text-align: left;
         font-size: 14px;
         color: #fff;
         border-left: 3px solid red;

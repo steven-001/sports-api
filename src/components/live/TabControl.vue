@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import TabControl_tab from "../home/TabControl_tab";
+  import TabControl_tab from "../public/TabControl_tab";
   export default {
     components:{TabControl_tab},
     data() {
@@ -26,6 +26,7 @@
     },
     methods: {
       showSubmit(data){
+        console.log(data)
         this.$parent.showSubmit(data);
       },
     }

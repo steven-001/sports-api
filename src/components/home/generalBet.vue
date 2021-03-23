@@ -80,15 +80,15 @@
         </van-tab>
       </van-tabs>
     </van-popup>
-    <TabControl_tab/>
+    <TabControl_tab @showSubmit="showSubmit"/>
     <submitBet ref="submitBet"/>
   </div>
 </template>
 
 <script>
   import { mapState, mapGetters } from "vuex";
-  import submitBet from "../live/submitBet";
-  import TabControl_tab from "../home/TabControl_tab";
+  import submitBet from "../public/submitBet";
+  import TabControl_tab from "../public/TabControl_tab";
   export default {
     components:{TabControl_tab,submitBet},
     name:"generalBet",

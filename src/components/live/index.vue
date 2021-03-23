@@ -113,7 +113,7 @@
   import player_box from "./player_box";
   import Chat from "./chat";
   import TabControl from "./TabControl";
-  import submitBet from "./submitBet";
+  import submitBet from "../public/submitBet";
   export default {
     components: { player_box,Chat,TabControl,submitBet },
     data() {
