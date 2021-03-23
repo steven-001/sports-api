@@ -5,7 +5,7 @@
         <div class="return" @click="back">
           <img src="../../assets/首页/return2.png"/>
         </div>
-        <van-row type="flex" justify="center" align="center" class="title" @click="topShow=!topShow">
+        <van-row type="flex" justify="center" align="center" class="title" @click="onTopShow()">
           <div>{{ allItem.leagueName }}</div>
           <img src="../../assets/live/xia.png"/>
         </van-row>
@@ -53,17 +53,17 @@
                 title-active-color="#4F82F4"
                 background="rgba(245, 246, 250, 0.9)"
                 line-height="2px">
-        <van-tab v-for="(k,i) in allData" :key="i" >
+        <van-tab v-for="(k,i) in allData" :key="i" :name="k.leagueId">
           <template #title>{{ k.leagueName }}</template>
           <van-row type="flex" justify="space-between"
                    v-for="(n,j) in k.events" :key="j"
-                   @click="parentId=n.parentId"
-                   class="middle" :class="{middle_active:n.parentId==parentId}">
+                   @click="changeParentId(k,n)"
+                   class="middle" :class="{middle_active:n.parentId==typeId}">
             <div class="imgBox">
               <img src="../../assets/首页/bet/zq_blsiem.png"/>
               <div>{{ n.homeName }}</div>
             </div>
-            <div class="middleBox" v-if="isLive">
+            <div class="middleBox" v-if="checkedData.isLive">
               <div>{{ n.eventDate.split(' ')[1] }}</div>
               <div>{{ n.score.split('-')[0] }} - {{ n.score.split('-')[1] }}</div>
             </div>
@@ -85,56 +85,36 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from "vuex";
+  import { mapState, mapGetters } from "vuex";
   import TabControl_tab from "../home/TabControl_tab";
   export default {
     components:{TabControl_tab},
     name:"generalBet",
     data() {
       return {
-        active:null,
+        active:this.$store.state.leagueId,
         topShow:false,
+        typeId:this.$store.state.parentId,
       }
     },
     computed:{
-      ...mapState(["gqData","fgqData"]),
-      isLive(){
-        return this.$route.query.isLive
-      },
-      allData(){
-        console.log('allData--',this.isLive?this.gqData:this.fgqData)
-        return this.isLive?this.gqData:this.fgqData
-      },
-      allItem(){
-        let obj = this.allData.filter(k=>{ return k.leagueId==this.leagueId })[0]
-        return obj || {events:[]}
-      },
-      checkedData(){
-        let obj = this.allItem.events.filter(k=>{ return this.parentId==k.parentId })[0] || {eventDate:''}
-        return obj
-      },
-      leagueId(){
-        return this.$route.query.leagueId
-      },
-      parentId:{
-        get() {
-          return this.$route.query.parentId
-        },
-        set(val) {
-          const query=JSON.parse(JSON.stringify(this.$route.query))
-          query.parentId=val
-          this.$router.push({ path: this.$route.path, query })
-        }
-      },
+      ...mapState(['leagueId','allData']),
+      ...mapGetters(['allItem','checkedData']),
     },
     activated() {
-      if(!this.$route.query.leagueId){
-        this.$router.push({path: '/'})
-        return
-      }
       this.topShow=false
     },
     methods: {
+      onTopShow(){
+        this.active=this.$store.state.leagueId
+        this.topShow=!this.topShow
+      },
+      changeParentId(k,n){
+        this.$store.state.leagueId=k.leagueId
+        this.$store.state.parentId=n.parentId
+        this.typeId=n.parentId
+        this.topShow=false
+      },
       //返回首页
       back(){
         this.$router.push({path: '/'})
@@ -266,7 +246,9 @@
           color: #000 !important;
         }
         .TabControl_box{
-          background-color: #F5F6FA;
+          .separate{
+            background-color: #F5F6FA;
+          }
         }
       }
     }

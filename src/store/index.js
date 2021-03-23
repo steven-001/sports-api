@@ -124,6 +124,10 @@ const state = {
     {id:94 ,type:"6min over/under" ,name:"首 6 大小盘",show:5},
     {id:95 ,type:"5min handicap" ,name:"首 5 让分盘",show:5},
   ],
+//  当前选中的赛事资料
+  leagueId:null,
+  parentId:null,
+  allData:[],
 }
 
 const store = new Vuex.Store({
@@ -150,30 +154,6 @@ const store = new Vuex.Store({
     onMenu(state,data){
       if(data.normal.length>0){
         state.menuBoj=data.normal
-      //   let zpNum=0
-      //   let jrNum=0
-      //   let gqNum=0
-      //   let cgNum=0
-      //   for (let k of data.normal){
-      //     if(k.sportType!='financial'&&k.sportType!="horseracing"&&k.sportType!="greyhounds"&&k.sportType!="lotto"&&k.sportType!="others"){
-      //       if(k.earlyCount){
-      //         // zpNum+=k.earlyCount//早盘
-      //       }
-      //       if(k.todayCount){
-      //         jrNum+=k.todayCount//今日
-      //       }
-      //       if(k.totalCount){
-      //         cgNum+=k.totalCount//串关
-      //       }
-      //       if(k.isLive){
-      //         gqNum+=k.totalCount//滚球
-      //       }
-      //     }
-      //   }
-      //   state.DataNum.zpNum=zpNum
-      //   state.DataNum.jrNum=jrNum
-      //   state.DataNum.gqNum=gqNum
-      //   state.DataNum.cgNum=cgNum
       }
     },
   },
@@ -182,8 +162,56 @@ const store = new Vuex.Store({
     onShow({commit,state},params){
 
     },
-  }
- 
+  },
+  getters:{
+    allItem:state=>{
+      let obj = state.allData.filter(k=>{ return k.leagueId==state.leagueId })[0]
+      return obj || {events:[{parentSportName:'',eventDate:''}]}
+    },
+    checkedData:state=>{
+      let obj = store.getters.allItem.events.filter(k=>{ return state.parentId==k.parentId })[0]
+      return obj
+    },
+    sessionsData:state=>{
+      let obj = store.getters.checkedData.sessions
+      obj.map(k=>{
+        k.list=[]
+        for (let i in k){
+          if((typeof k[i])=='object'&&i!='list'){
+            if(!Array.isArray(k[i])){
+              let arr = k.list.filter(item=>{ return item.betType==k[i].betType })
+              if(arr.length>0){
+                k.list.map(item=>{
+                  if(item.betType==k[i].betType ){
+                    item.data.push(k[i])
+                  }
+                })
+              }else {
+                let typeArr = state.AllType.filter(item=>{ return item.type.toLowerCase()==k[i].betType.toLowerCase()})[0] || []
+                k.list.push({betType:k[i].betType,data:[k[i]],show:typeArr.show,text:typeArr.name,showType:1})
+              }
+            }else {
+              k[i].map(n=>{
+                let arr = k.list.filter(item=>{ return item.betType==n.betType })
+                if(arr.length>0){
+                  k.list.map(item=>{
+                    if(item.betType==n.betType ){
+                      item.data.push(n)
+                    }
+                  })
+                }else {
+                  let typeArr = state.AllType.filter(item=>{ return item.type.toLowerCase()==n.betType.toLowerCase()})[0] || []
+                  k.list.push({betType:n.betType,data:[n],show:typeArr.show,text:typeArr.name,showType:2})
+                }
+              })
+            }
+          }
+        }
+      })
+      console.log(obj)
+      return obj
+    },
+  },
 })
 
 export default store
