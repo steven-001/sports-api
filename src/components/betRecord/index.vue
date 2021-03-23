@@ -9,6 +9,12 @@
         <img src="../../assets/首页/新建文件夹/icon_msg_center@2x.png" class="msg-icon" />
       </div>
     </van-row>
+    <van-popup v-model="showPicker" position="bottom">
+      <van-picker show-toolbar title="全部类型"
+                  :columns="qryCond"
+                  @cancel="showPicker = false"
+                  @confirm="onChangeQry"/>
+    </van-popup>
     <van-tabs v-model="curTab" sticky animated
               @change="changeTab"
               line-width="40px"
@@ -22,21 +28,18 @@
                :key="item.gameKey"
                :name="item.gameKey">
         <div class="normal-bet-list">
-            <div class="bet-list-query">
-              <select @change="changeBetType">
-                <option>全部类型</option>
-              </select>
-              <select @change="changeBetTime">
-                <option>今天</option>
-              </select>
-            </div>
+            <van-field class="bet-list-query"
+              readonly clickable
+              :value="curCond.name" @click="showPicker = true"
+            />
             <div class="record-div" :class="'record-div-'+item.gameKey">
               <van-row type="flex" justify="space-between" align="center" class="record-count">
                 <span>笔数:{{count.num}}</span>
                 <span>流水:{{count.money}}</span>
                 <span>输赢:{{count.win}}</span>
               </van-row>
-              <van-list v-model="loading" :finished="finished" :finished-text="finishedText" @load="loadPage">
+              <van-list v-model="page.loading" :finished="page.finished"
+                        :finished-text="page.finishedText" @load="loadPage">
                 <template v-for="record in data">
                   <div class="record-item-div">
                     <van-row type="flex" justify="space-between" align="center" class="record-item-top">
@@ -53,7 +56,7 @@
                         <span class="record-bet-state" :class="'bet-state-'+record.state">投注成功</span>
                       </van-row>
                       <van-row type="flex" justify="space-between" align="center" class="record-item-game">
-                        <span class="record-item-game-name" :style="gameLeftImg">{{record.gameName}}</span>
+                        <span class="record-item-game-name">{{record.gameName}}</span>
                         <span class="record-item-game-time">比赛时间：{{record.gameTime}}</span>
                       </van-row>
                       <div class="record-item-gamevs">{{record.gameVsInfo}}</div>
@@ -88,14 +91,15 @@
     data() {
       return{
         curTab:"zq",
-        pageSize:20,
         data:[],
-        finishedText: "-已加载全部内容-",
-        page: 1, //页数
-        loading: false,
-        finished: false,
+        showPicker:false,
+        curCond:{name:"全部选择,今天",betState:0,betTime:0},
+        page:{pageNum:1,pageSize:20,loading:false,finished:false,finishedText: "-已加载全部内容-"},
         count:{num:1,money:10.00,win:-10.00},
-        curQryParam:{},
+        qryCond:[
+          {values:["全部选择","已结算","未结算"],defaultIndex:0},
+          {values:["今天","昨天","近七天","三个月"],defaultIndex: 0}
+        ],
         gameTypes:[
           {gameName:"足球",gameKey:"zq"},
           {gameName:"篮球",gameKey:"lq"},
@@ -103,10 +107,7 @@
           {gameName:"网球",gameKey:"wq"},
           {gameName:"乒乓球",gameKey:"ppq"},
           {gameName:"冰球",gameKey:"bq"}
-        ],
-        gameLeftImg:{
-          backgroundImage: 'url(' + require('../../assets/首页/新建文件夹/icon_league@2x.png') + ')',
-        }
+        ]
       }
     },
     mounted() {
@@ -117,28 +118,28 @@
         this.initPage();
       },
       initPage:function(){
-        this.page=1;
+        this.page.pageNum=1;
         this.data=[];
-        this.loading=false;
-        this.finished=false;
+        this.page.loading=false;
+        this.page.finished=false;
       },
       loadPage:function(){
         //this.$ajax.get('').then(res => {});
-        this.loading=false;
-        this.finished=true;
+        this.page.loading=false;
+        this.page.finished=true;
         this.data=[
           {state:"1",num:"1",money:"12.12",win:"-12.12",betType:"单式-金龙体育",
             gameName:"波兰女士杯",gameTime:"2021-03-20 12:12:12",gameVsInfo:"sdfsdf vs  sdfdsf",
             betName:"滚球 独赢",betValue:"输",betCate:"四道口附近v",betCateVal:"全场1-1",
-            money:10.22,win:-10.22,orderId:234233453454,orderTime:"02/23 12:12",betDay:"03月12日"
+            orderId:234233453454,orderTime:"02/23 12:12",betDay:"03月12日"
           }
         ];
       },
-      changeBetType(){
-
-      },
-      changeBetTime(){
-
+      onChangeQry(picker, value){
+        this.curCond.name=picker[0]+","+picker[1];
+        this.curCond.betState=value[0];
+        this.curCond.betTime=value[1];
+        this.showPicker = false;
       }
     }
   }
@@ -151,15 +152,6 @@
     background: white;
     padding: 12px 20px;
     border-top: 1px solid #f5f3f3;
-    select{
-      border: 1px solid #f1f1f1;
-      border-radius: 18px;
-      padding: 5px 0px;
-      background: #f1f1f1;
-      width: 120px;
-      text-align: center;
-      text-align-last: center;
-    }
   }
   .normal-bet-list{
     .record-count{
@@ -206,6 +198,7 @@
           padding-left: 15px;
           background-size: 12px 11px;
           background-position-y: 3px;
+          background-image: url("../../assets/首页/新建文件夹/icon_league@2x.png");
         }
       }
       .record-item-gamevs:before{
