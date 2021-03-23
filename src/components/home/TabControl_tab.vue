@@ -1,45 +1,30 @@
 <template>
       <div class="TabControl_body_tab">
         <van-tabs v-model="active" animated>
-          <van-tab>
-            <template #title>所有盘口</template>
-            <div class="TabControl_body_tab_content" v-for="(k,i) in sessionsData" :key="i">
-              <div v-for="(n,j) in k.list" :key="j">
-                <div class="box_title">
-                  {{ jointList[i] }} {{ locale==2?n.text:n.betType }}
-                </div>
-                <div style="width: 100%;overflow: auto">
-                  <div :class="{betSwipe:n.showType==2}">
-                    <div v-for="(m,x) in n.data" :key="x" class="TabControl_box">
-                      <div class="title">
-                        <span>{{ m.selectionName }}</span>
-                      </div>
-                      <div class="separate" @click="showSubmit(m,n.betType)">
-                        <span :class="{span1:m.displayValue!=''}">{{ m.displayValue }}</span>
-                        <span class="odds" :class="{span2:m.displayValue!=''}">{{ m.selectionPrice }}</span>
+          <van-tab v-for="(item,o) in tabs" :key="o" :name="item.type" v-if="item.bool">
+            <template #title>{{ item.text }}</template>
+            <div class="overflow_body">
+              <div class="TabControl_body_tab_content" v-for="(k,i) in sessionsData" :key="i">
+                <div v-for="(n,j) in k.list" :key="j" v-if="active==0||n.show==active">
+                  <div class="box_title">
+                    {{ jointList[i] }} {{ locale==2?n.text:n.betType }}
+                  </div>
+                  <div style="width: 100%;overflow: auto">
+                    <div :class="{betSwipe:n.showType==2}">
+                      <div v-for="(m,x) in n.data" :key="x" class="TabControl_box" :class="setClass(n.betType)+(' betArr_'+n.data.length)">
+                        <div class="title">
+                          <span>{{ m.selectionName }}</span>
+                        </div>
+                        <div class="separate" @click="showSubmit(m)">
+                          <span :class="{span1:m.displayValue!=''}">{{ m.displayValue }}</span>
+                          <span class="odds" :class="{span2:m.displayValue!=''}">{{ m.selectionPrice }}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                  <!--多个-->
-                <!--<div v-for="(m,x) in n.data" :key="x" class="box2">-->
-                  <!--<div class="TabControl_box">-->
-                    <!--<span>{{ m.selectionName }}</span>-->
-                  <!--</div><div class="TabControl_box separate" @click="showSubmit(m,n.betType)">-->
-                    <!--<span>{{ m.displayValue }}</span><span class="odds">{{ m.selectionPrice }}</span>-->
-                  <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;三个&ndash;&gt;-->
-                <!--<div class="TabControl_box" v-for="(m,x) in n.betPptions" :key="x" v-if="n.type==1" @click="showSubmit(m,m.name,n.typeName)">-->
-                  <!--<span>{{ m.name }}</span>-->
-                  <!--<span class="odds">{{ m.odds }}</span>-->
-                <!--</div>-->
               </div>
             </div>
-          </van-tab>
-          <van-tab v-for="(k,i) in tabControlData.data" :key="i">
-            <template #title>{{ k.text }}</template>
-            <div class="TabControl_body_tab_content"></div>
           </van-tab>
         </van-tabs>
       </div>
@@ -54,14 +39,14 @@
         locale:localStorage.getItem('locale'),
         active:0,
         tabsList:[
-          {text:'所有盘口',type:0,},
-          {text:'让球',type:1,},
-          {text:'波胆',type:2,},
-          {text:'角球',type:3,},
-          {text:'黄红牌',type:4,},
-          {text:'特殊投注',type:5,},
-          {text:'半场',type:6,},
-          {text:'节',type:7,},
+          {text:'所有盘口',type:0,bool:true},
+          {text:'让球&大小',type:1,bool:false},
+          {text:'波胆',type:2,bool:false},
+          {text:'角球',type:3,bool:false},
+          {text:'黄红牌',type:4,bool:false},
+          {text:'特殊投注',type:5,bool:false},
+          {text:'半/全场',type:6,bool:false},
+          {text:'节',type:7,bool:false},
         ],
         tabControlData:{
           home:'多特蒙德',
@@ -120,22 +105,48 @@
       }
     },
     computed:{
-      ...mapGetters(['sessionsData']),
+      ...mapGetters(['sessionsData','checkedData','allItem']),
+      tabs(){
+        this.tabsList.map(item =>{
+          if(item.type>0){
+            this.sessionsData.map(k=>{
+              let arr = k.list.filter(n=>{ return n.show==item.type })
+              arr.length>0?item.bool=true:''
+            })
+          }
+        })
+        return this.tabsList || []
+      },
     },
     mounted() {
 
     },
     methods: {
-      showSubmit(obj,typeName){
+      showSubmit(obj){
         let data={
-          home:this.tabControlData.home,
-          guest:this.tabControlData.guest,
-          name:selectionName,
+          leagueName:this.allItem.leagueName,
+          home:this.checkedData.homeName,
+          guest:this.checkedData.awayName,
+          name:obj.selectionName,
           odds:obj.selectionPrice,
-          Fraction:obj.displayValue||'',
-          typeName:betType,
+          Fraction:obj.displayValue,
+          betType:obj.betType,
         }
-        this.$emit('showSubmit',data)
+        this.$parent.showSubmit(data)
+      },
+      setClass(str){
+        let text = ''
+        str.split(' ').map(k=>{
+          if(k.split('/').length>1){
+            let text2 =''
+            k.split('/').map(n=>{
+              text2+=n
+            })
+            k=text2
+          }
+          text+=k
+        })
+        return text
       },
     }
   }
@@ -147,6 +158,10 @@
     background-color: rgba(255, 255, 255, 0.3);
     width: calc(100% - 10px);
     height: calc(100% - 50px);
+    .overflow_body {
+      height: calc(100vh - 56vw - 50px);
+      overflow-y: auto;
+    }
     .van-tab{
       flex-basis:25% !important;
       color: #000 !important;
@@ -172,29 +187,33 @@
       background-color: rgba(228, 181, 116, 0) !important;
     }
     .TabControl_body_tab_content{
+      text-align: center;
       .box_title{
         font-size: 14px;
         color: #fff;
         border-left: 3px solid red;
-        margin: 5px;
+        margin: 0 5px;
         text-indent: 8px;
-        margin-bottom: 0;
       }
       .odds{
         color: #FFAA00;
       }
       .TabControl_box{
+        border-radius: 5px;
         display: inline-block;
         font-size: 11px;
-        margin: 0 5px;
+        margin: 0 2px 5px;
         text-align: center;
         min-width: 100px;
         .title{
+          font-weight: bold;
           padding: 5px 10px;
         }
         .separate{
           line-height: 20px;
           border-radius: 5px;
+          padding: 5px 0;
+          font-size: 12px;
           span{
             display: inline-block;
           }
@@ -206,6 +225,15 @@
             padding-left: 10px;
           }
         }
+      }
+      .doubleresult{
+        width: 60vw;
+      }
+      .betArr_3{
+        width: 32%;
+      }
+      .betArr_2{
+        width: 48%;
       }
       .betSwipe {
         width: 200%;

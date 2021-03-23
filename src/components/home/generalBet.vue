@@ -7,9 +7,10 @@
         </div>
         <van-row type="flex" justify="center" align="center" class="title" @click="onTopShow()">
           <div>{{ allItem.leagueName }}</div>
-          <img src="../../assets/live/xia.png"/>
         </van-row>
-        <div class="return"></div>
+        <div class="return">
+          <img src="../../assets/live/xia.png" class="zq_xxlh"/>
+        </div>
       </van-row>
       <van-row type="flex" justify="space-between" class="middle">
         <div class="imgBox">
@@ -79,16 +80,17 @@
         </van-tab>
       </van-tabs>
     </van-popup>
-
     <TabControl_tab/>
+    <submitBet ref="submitBet"/>
   </div>
 </template>
 
 <script>
   import { mapState, mapGetters } from "vuex";
+  import submitBet from "../live/submitBet";
   import TabControl_tab from "../home/TabControl_tab";
   export default {
-    components:{TabControl_tab},
+    components:{TabControl_tab,submitBet},
     name:"generalBet",
     data() {
       return {
@@ -115,6 +117,9 @@
         this.typeId=n.parentId
         this.topShow=false
       },
+      showSubmit(data){
+        this.$refs.submitBet.onInitialize(data)
+      },
       //返回首页
       back(){
         this.$router.push({path: '/'})
@@ -126,6 +131,9 @@
 <style lang="scss">
   @keyframes wordsLoop {
     0% {
+      transform: translateX(0px);
+    }
+    50% {
       transform: translateX(0px);
     }
     100% {
@@ -145,17 +153,24 @@
           top:calc(50% - 7px);
           height: 14px;
         }
+        .zq_xxlh{
+          margin: 0 3px;
+          height: 5px;
+          position: absolute;
+          top: calc(50% - 2px);
+        }
       }
       .title{
         font-size: 16px;
         text-align: center;
-        width: 80%;
+        width: 60%;
         height: 50px;
         line-height: 50px;
         color: #fff;
-        img{
-          margin: 0 3px;
-          height: 5px;
+        overflow: hidden;
+        white-space: nowrap;
+        div{
+          animation: 10s wordsLoop linear infinite;
         }
       }
     }

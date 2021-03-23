@@ -136,7 +136,6 @@
             return item.sportType==k.gameCode.toLowerCase()
           })
         })
-        console.log(this.sportsType.filter(k=>{ return k.gqId||k.fgqId}))
         return this.sportsType.filter(k=>{ return k.gqId||k.fgqId})
       },
       onCount(){

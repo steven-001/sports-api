@@ -60,7 +60,8 @@
                         <div v-if="onLock(m[h])" @click="showSubmit(m[h],n,k.leagueName)">
                           <span v-if="l==0">{{ a==0?'主胜':a==1?'客胜':'和局' }}</span>
                           <span v-else>{{ m[h].displayValue }}</span>
-                          <b><van-icon name="play" :class="{litre:true,drop:false}"/>{{ m[h].selectionPrice }}</b>
+                          <!--{litre:true,drop:false}-->
+                          <b><van-icon name="play" :class="setGqData(h)"/>{{ m[h].selectionPrice }}</b>
                         </div>
                         <div v-else>
                           <img :src="require(`../../assets/首页/bet/zq_sz.png`)"/>
@@ -89,6 +90,8 @@
           ['shdh','shda'],
           ['souh','soua'],
         ],
+        oldGqData:[],
+        newGqData:[],
       }
     },
     computed:{
@@ -100,10 +103,29 @@
         return this.fgqData
       },
     },
-    mounted() {
-
+    watch:{
+      //滚球赔率刷新
+      "gqData":{
+        deep:true, //深度监听设置为 true
+        handler:function(n,o) {
+          if(n.length>0){
+            this.oldGqData=o
+            this.newGqData=n
+          }
+        }
+      },
     },
     methods: {
+      setGqData(kay){
+        // console.log(kay)
+        this.newGqData.map(item=>{
+          item.events.map(k=>{
+            k.sessions.map(n=>{
+              // console.log(kay,n[kay])
+            })
+          })
+        })
+      },
       //投注卡上锁
       onLock(obj){
         if(obj&&obj.selectionPrice>1&&obj.selectionStatus =='a'){
@@ -117,7 +139,6 @@
         }
       },
       showSubmit(obj,events,leagueName){
-        console.log('events----',events)
         let data={
           leagueName:leagueName,
           home:events.homeName,
