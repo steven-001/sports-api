@@ -14,13 +14,6 @@ const state = {
   score:10000,//当前金币数
   agentId:229,//业主ID
   betObj:[],//串关下注list
-  //体育首页菜单数据
-  DataNum:{
-    jrNum:0,
-    gqNum:0,
-    zpNum:0,
-    cgNum:0,
-  },
   menuBoj:[],//解析前的体育数据
   gqData:[],//当前滚球数据
   fgqData:[],//当前非滚球数据

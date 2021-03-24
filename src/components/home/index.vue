@@ -80,7 +80,7 @@
 <script>
   import { mapState, mapActions } from "vuex";
   import sportDetails from "./sportDetails";
-  import submitBet from "../live/submitBet";
+  import submitBet from "../public/submitBet";
   import YSB from '@/util/YSB' //YSB数据
   export default {
     components:{sportDetails,submitBet},
@@ -136,7 +136,6 @@
             return item.sportType==k.gameCode.toLowerCase()
           })
         })
-        console.log(this.sportsType.filter(k=>{ return k.gqId||k.fgqId}))
         return this.sportsType.filter(k=>{ return k.gqId||k.fgqId})
       },
       onCount(){

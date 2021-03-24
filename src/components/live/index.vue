@@ -113,7 +113,7 @@
   import player_box from "./player_box";
   import Chat from "./chat";
   import TabControl from "./TabControl";
-  import submitBet from "./submitBet";
+  import submitBet from "../public/submitBet";
   export default {
     components: { player_box,Chat,TabControl,submitBet },
     data() {
@@ -447,6 +447,25 @@
       canvas{
         position: absolute;
         top: 0;
+      }
+    }
+    .overflow_body{
+      height: calc(100vh - 1.33rem - 95px);
+      overflow-y: auto;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 16px;
+      .TabControl_box{
+        background-color: #fff;
+        padding: 3px 0 !important;
+        .title{
+          padding: 0 10px !important;
+          /*color: #fff;*/
+          margin: 2px 0;
+        }
+        .separate{
+          background-color: #fff;
+          padding: 0px 0 !important;
+        }
       }
     }
   }
