@@ -458,7 +458,7 @@
         background-color: #fff;
         padding: 3px 0 !important;
         .title{
-          padding: 0 10px !important;
+          padding: 0 !important;
           /*color: #fff;*/
           margin: 2px 0;
         }

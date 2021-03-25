@@ -45,6 +45,9 @@ export default {
     let yy=this.locale.indexOf(locale)>-1?locale:1
     live?live.disconnect():'';
     console.log('断开滚球')
+    store.commit("getgq", [])
+    store.commit("getfgq", [])
+    store.state.gqId=id
     var live = new YSB.YSBSignalR(store.state.YsbUrl, store.state.VI,store.state.Secret, id, 1, yy);
     live.startConnection().then(function () {
       live.getData("2").then(function (data) {
@@ -62,6 +65,9 @@ export default {
     let yy=this.locale.indexOf(locale)>-1?locale:1
     noLive?noLive.disconnect():'';
     console.log('断开非滚球')
+    store.commit("getgq", [])
+    store.commit("getfgq", [])
+    store.state.fgqId=id
     var noLive = new YSB.YSBSignalR(store.state.YsbUrl, store.state.VI,store.state.Secret, id, 2, yy);
     noLive.startConnection().then(function () {
       noLive.getData("2").then(function (data) {

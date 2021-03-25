@@ -120,6 +120,9 @@
       showSubmit(data){
         this.$refs.submitBet.onInitialize(data)
       },
+      submitSucceed(data){
+        console.log(data)
+      },
       //返回首页
       back(){
         this.$router.push({path: '/'})
