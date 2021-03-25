@@ -121,11 +121,20 @@ const state = {
   leagueId:null,
   parentId:null,
   allData:[],
+  fgqId:null,
+  gqId:null,
+  ContinuousData:[],
 }
 
 const store = new Vuex.Store({
   state:sessionStorage.getItem('state') ? JSON.parse(sessionStorage.getItem('state')): state,
   mutations:{
+    onContinuousData(state,data){
+      state.ContinuousData=data
+    },
+    delContinuousData(state,data){
+      console.log(data)
+    },
     changeBetObj(state,betObj){
      state.betObj.push(betObj);
     },
@@ -171,6 +180,7 @@ const store = new Vuex.Store({
         k.list=[]
         for (let i in k){
           if((typeof k[i])=='object'&&i!='list'){
+            k[i]['keyNmae']=i
             if(!Array.isArray(k[i])){
               let arr = k.list.filter(item=>{ return item.betType==k[i].betType })
               if(arr.length>0){

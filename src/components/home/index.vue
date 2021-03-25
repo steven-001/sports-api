@@ -74,16 +74,19 @@
     <sportDetails/>
     <!--单式投注-->
     <submitBet ref="submitBet"/>
+    <!--串关投注-->
+    <Continuous v-if="betType==3" ref="Continuous"/>
   </div>
 </template>
 
 <script>
   import { mapState, mapActions } from "vuex";
   import sportDetails from "./sportDetails";
+  import Continuous from "./Continuous";
   import submitBet from "../public/submitBet";
   import YSB from '@/util/YSB' //YSB数据
   export default {
-    components:{sportDetails,submitBet},
+    components:{sportDetails,submitBet,Continuous},
     data() {
       return {
         refreshLoad:false,
@@ -93,7 +96,7 @@
           { text: '早盘', value: 1 ,type:'fgqCount'},
           { text: '串关', value: 3 ,type:'totalCount'},
         ],
-        betType:2,
+        betType:3,
         sportsType:[],
         sportCode:null,
         dateList:[
@@ -180,13 +183,12 @@
           this.sportCode=arr.gameCode
           this.changeSpotsType()
         } else if(this.betType==3){
-          // this.gqID==''?'':YSB.onLive(this.gqID,this.$i18n.locale)
-          // this.fgqID==''?'':YSB.onOnLive(this.fgqID+'-',this.$i18n.locale)
+          let arr=this.sportsTabs.filter(k=>{ return k.totalCount>0})[0]
+          this.sportCode=arr.gameCode
+          this.changeSpotsType()
         }
       },
       changeSpotsType(){
-        this.$store.commit("getgq", [])
-        this.$store.commit("getfgq", [])
         let data = this.sportsTabs.filter(k=>{ return k.gameCode==this.sportCode})[0]
         if(this.betType==0){
           YSB.onNoLive(data.fgqId+'-0',this.$i18n.locale)
@@ -195,6 +197,10 @@
         }else if(this.betType==2){
           YSB.onLive(data.gqId,this.$i18n.locale)
         } else if(this.betType==3){
+          if(data.gqId)
+          YSB.onLive(data.gqId,this.$i18n.locale)
+          if(data.fgqId)
+          YSB.onNoLive(data.fgqId+'-',this.$i18n.locale)
         }
       },
       getSportTypeConfig(){//获取体育赛事Type
@@ -206,7 +212,11 @@
         })
       },
       showSubmit(data){
-        this.$refs.submitBet.onInitialize(data)
+        if(this.betType==3){
+          this.$refs.Continuous.onInitialize(data)
+        }else {
+          this.$refs.submitBet.onInitialize(data)
+        }
       },
     },
   };

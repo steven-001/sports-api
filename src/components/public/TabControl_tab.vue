@@ -17,7 +17,10 @@
                         </div>
                         <div class="separate" @click="showSubmit(m)">
                           <span :class="{span1:m.displayValue!=''}">{{ m.displayValue }}</span>
-                          <span class="odds" :class="{span2:m.displayValue!=''}">{{ m.selectionPrice }}</span>
+                          <span class="odds" :class="{span2:m.displayValue!=''}">
+                            <van-icon name="play" :class="setGqData(m,m.keyNmae)+' '+m.type"/>
+                            {{ m.selectionPrice }}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -32,6 +35,7 @@
 
 <script>
   import { mapState, mapGetters } from "vuex";
+  import YSB from '@/util/YSB' //YSB数据
   export default {
     data() {
       return {
@@ -48,63 +52,11 @@
           {text:'半/全场',type:6,bool:false},
           {text:'节',type:7,bool:false},
         ],
-        tabControlData:{
-          home:'多特蒙德',
-          guest:'沙赫坤度若',
-          data:[
-            {
-              text:'让球&大小',data:[
-                {
-                  typeName:'让球',type:'2',betPptions:[
-                    {name:'多特蒙德',Fraction:[
-                        {Fraction:'+0.5/1', odds:1.97,},
-                        {Fraction:'+1', odds:1.71,},
-                        {Fraction:'+1', odds:1.73,},
-                      ],
-                    },
-                    {name:'沙赫坤度若',Fraction:[
-                        {Fraction:'+1', odds:1.97,},
-                        {Fraction:'+0.5/1', odds:1.71,},
-                        {Fraction:'+1', odds:1.73,},
-                      ],
-                    },
-                  ]
-                },
-              ],
-            },
-            {
-              text:'半/全场',data:[
-
-              ],
-            },
-            {
-              text:'独赢',data:[
-                {
-                  typeName:'独赢',type:'1',betPptions:[
-                    {name:'多特蒙德', odds:3.80},
-                    {name:'和', odds:4.30},
-                    {name:'沙赫坤度若', odds:1.65}
-                  ]
-                },
-                {
-                  typeName:'独赢-上半场',type:'1',betPptions:[
-                    {name:'多特蒙德', odds:3.20},
-                    {name:'和', odds:4.10},
-                    {name:'沙赫坤度若', odds:2.10}
-                  ]
-                },
-              ],
-            },
-            {
-              text:'波胆',data:[
-
-              ],
-            },
-          ],
-        },
+        oldGqData:[],
       }
     },
     computed:{
+      ...mapState(["gqData","fgqData",'fgqId','gqId']),
       ...mapGetters(['sessionsData','checkedData','allItem']),
       tabs(){
         this.tabsList.map(item =>{
@@ -118,12 +70,47 @@
         return this.tabsList || []
       },
     },
-    mounted() {
-
+    watch:{
+      //滚球赔率刷新
+      "gqData":{
+        deep:true, //深度监听设置为 true
+        handler:function(n,o) {
+          if(n.length>0){
+            this.oldGqData=o
+          }
+        }
+      },
+    },
+    activated(){
+      // if(this.checkedData.isLive){
+      //   YSB.onLive(this.gqId,this.$i18n.locale)
+      // }else {
+      //   YSB.onNoLive(this.fgqId,this.$i18n.locale)
+      // }
     },
     methods: {
+      //判断当前赔率 降/升
+      setGqData(obj,kay){
+        this.oldGqData.map(item=>{
+          item.events.map(k=>{
+            k.sessions.map(n=>{
+              if(obj.selectionId==n[kay].selectionId){
+                if(obj.selectionPrice>n[kay].selectionPrice){
+                  obj.type='litre'
+                }else if(obj.selectionPrice<n[kay].selectionPrice){
+                  obj.type='drop'
+                }else {
+                  obj.type='undefined'
+                }
+              }
+            })
+          })
+        })
+        return ''
+      },
       showSubmit(obj){
         let data={
+          selectionId:obj.selectionId,
           leagueName:this.allItem.leagueName,
           home:this.checkedData.homeName,
           guest:this.checkedData.awayName,
@@ -198,6 +185,20 @@
       }
       .odds{
         color: #FFAA00;
+        .undefined{
+          display: none;
+        }
+        .litre{
+          transform: rotate(-90deg);
+          color: #69C969;
+          position: relative;
+          top: 4px;
+        }
+        .drop{
+          transform: rotate(-90deg);
+          color: #DB6372;
+          top: 4px;
+        }
       }
       .TabControl_box{
         border-radius: 5px;
@@ -208,7 +209,7 @@
         min-width: 100px;
         .title{
           font-weight: bold;
-          padding: 5px 10px;
+          padding: 5px 0px;
         }
         .separate{
           line-height: 20px;

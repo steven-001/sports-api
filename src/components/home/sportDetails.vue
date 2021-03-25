@@ -56,12 +56,12 @@
                   </van-row>
                   <van-row type="flex" justify="space-between" class="right_bottom">
                     <div :class="{'right-swipe_box1':l==0,'right-swipe_box2':l!=0}" v-for="(itme,l) in rightData" :key="l">
-                      <div v-for="(h,a) in itme" :key="a">
+                      <div v-for="(h,a) in itme" :key="a" class="grid" :class="{Continuous_grid:changeGrid(m[h])}">
                         <div v-if="onLock(m[h])" @click="showSubmit(m[h],n,k.leagueName)">
                           <span v-if="l==0">{{ a==0?'主胜':a==1?'客胜':'和局' }}</span>
                           <span v-else>{{ m[h].displayValue }}</span>
                           <!--{litre:true,drop:false}-->
-                          <b><van-icon name="play" :class="setGqData(h)"/>{{ m[h].selectionPrice }}</b>
+                          <b><van-icon name="play" :class="setGqData(m[h],h)+' '+m[h].type"/>{{ m[h].selectionPrice }}</b>
                         </div>
                         <div v-else>
                           <img :src="require(`../../assets/首页/bet/zq_sz.png`)"/>
@@ -91,11 +91,10 @@
           ['souh','soua'],
         ],
         oldGqData:[],
-        newGqData:[],
       }
     },
     computed:{
-      ...mapState(["gqData","fgqData"]),
+      ...mapState(["gqData","fgqData","ContinuousData"]),
       ongoing(){
         return this.gqData
       },
@@ -110,21 +109,29 @@
         handler:function(n,o) {
           if(n.length>0){
             this.oldGqData=o
-            this.newGqData=n
           }
         }
       },
     },
     methods: {
-      setGqData(kay){
-        // console.log(kay)
-        this.newGqData.map(item=>{
+      //判断当前赔率 降/升
+      setGqData(obj,kay){
+        this.oldGqData.map(item=>{
           item.events.map(k=>{
             k.sessions.map(n=>{
-              // console.log(kay,n[kay])
+              if(n[kay]&&obj.selectionId==n[kay].selectionId){
+                if(obj.selectionPrice>n[kay].selectionPrice){
+                  obj.type='litre'
+                }else if(obj.selectionPrice<n[kay].selectionPrice){
+                  obj.type='drop'
+                }else {
+                  obj.type='undefined'
+                }
+              }
             })
           })
         })
+        return ''
       },
       //投注卡上锁
       onLock(obj){
@@ -138,8 +145,17 @@
           return false
         }
       },
+      //串关选中项
+      changeGrid(obj){
+        if(obj){
+          let arr = this.ContinuousData.filter(k=>{ return obj.selectionId==k.selectionId})
+          return arr.length>0
+        }
+      },
       showSubmit(obj,events,leagueName){
         let data={
+          parentId:events.parentId,
+          selectionId:obj.selectionId,
           leagueName:leagueName,
           home:events.homeName,
           guest:events.awayName,
@@ -257,6 +273,9 @@
               }
             }
             .right{
+              .undefined{
+                display: none;
+              }
               .litre{
                 transform: rotate(-90deg);
                 color: #69C969;
@@ -285,7 +304,7 @@
                     width: 32.5%;
                     font-size: 12px;
                     text-align: center;
-                    div{
+                    .grid{
                       height: 31%;
                       margin-bottom: 5%;
                       background-color: #F5F6FA;
@@ -307,7 +326,7 @@
                     width: 32.5%;
                     font-size: 12px;
                     text-align: center;
-                    div{
+                    .grid{
                       height: 48%;
                       margin-bottom: 5%;
                       background-color: #F5F6FA;
@@ -324,6 +343,9 @@
                       line-height: 25px;
                       color: #7E89A6;
                     }
+                  }
+                  .Continuous_grid{
+                    background-color: #dde0ef !important;
                   }
                 }
                 .van-swipe__indicators{
