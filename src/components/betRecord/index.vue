@@ -4,13 +4,13 @@
       <div class="return">
         <img src="../../assets/首页/return.png"/>
       </div>
-      <div class="title">投注记录</div>
+      <div class="title">{{$t("投注记录")}}</div>
       <div class="right-action">
         <img src="../../assets/首页/新建文件夹/icon_msg_center@2x.png" class="msg-icon" />
       </div>
     </van-row>
     <van-popup v-model="showPicker" position="bottom">
-      <van-picker show-toolbar title="全部类型"
+      <van-picker show-toolbar :title='$t("全部类型")'
                   :columns="qryCond"
                   @cancel="showPicker = false"
                   @confirm="onChangeQry"/>
@@ -27,63 +27,63 @@
                :title="item.gameName"
                :key="item.gameKey"
                :name="item.gameKey">
-        <div class="normal-bet-list">
-            <van-field class="bet-list-query"
-              readonly clickable
-              :value="curCond.name" @click="showPicker = true"
-            />
-            <div class="record-div" :class="'record-div-'+item.gameKey">
-              <van-row type="flex" justify="space-between" align="center" class="record-count">
-                <span>笔数:{{count.num}}</span>
-                <span>流水:{{count.money}}</span>
-                <span>输赢:{{count.win}}</span>
-              </van-row>
-              <van-list v-model="page.loading" :finished="page.finished"
-                        :finished-text="page.finishedText" @load="loadPage">
-                <template v-for="record in data">
-                  <div class="record-item-div">
-                    <van-row type="flex" justify="space-between" align="center" class="record-item-top">
-                      <div class="record-item-day">{{record.betDay}}</div>
-                      <div>
-                        <span>笔数：{{record.num}}</span>
-                        <span>流水：{{record.money}}</span>
-                        <span>输赢：{{record.win}}</span>
-                      </div>
-                    </van-row>
-                    <div class="record-item-swap">
-                      <van-row type="flex" justify="space-between" align="center" class="record-item-title">
-                        <span class="record-item-day">{{record.betType}}</span>
-                        <span class="record-bet-state" :class="'bet-state-'+record.state">投注成功</span>
-                      </van-row>
-                      <van-row type="flex" justify="space-between" align="center" class="record-item-game">
-                        <span class="record-item-game-name">{{record.gameName}}</span>
-                        <span class="record-item-game-time">比赛时间：{{record.gameTime}}</span>
-                      </van-row>
-                      <div class="record-item-gamevs">{{record.gameVsInfo}}</div>
-                      <van-row type="flex" justify="space-between" align="center" class="record-item-info">
-                        <span class="item-game-cate">{{record.betName}}</span>
-                        <span class="item-game-value">{{record.betValue}}</span>
-                      </van-row>
-                      <van-row type="flex" justify="space-between" align="center" class="record-item-info">
-                        <span class="item-game-betcate">{{record.betCate}}</span>
-                        <span class="item-game-value">{{record.betCateVal}}</span>
-                      </van-row>
-                      <van-row type="flex" justify="space-between" align="center" class="record-item-info">
-                        <span class="item-game-bet">投注金额：{{record.money}}</span>
-                        <span class="item-game-value">输/赢：{{record.win}}</span>
-                      </van-row>
-                      <van-row type="flex" justify="space-between" align="center" class="record-item-order">
-                        <span class="item-game-bet">订单号：{{record.orderId}}</span>
-                        <span class="item-game-value">投注时间：{{record.orderTime}}</span>
-                      </van-row>
-                    </div>
-                  </div>
-                </template>
-              </van-list>
-            </div>
-        </div>
       </van-tab>
     </van-tabs>
+    <div class="normal-bet-list">
+      <van-field class="bet-list-query"
+                 readonly clickable
+                 :value="curCond.name" @click="showPicker = true"
+      />
+      <div class="record-div">
+        <van-row type="flex" justify="space-between" align="center" class="record-count">
+          <span>{{$t("笔数")}}:{{count.num}}</span>
+          <span>{{$t("流水")}}:{{count.money}}</span>
+          <span>{{$t("输赢")}}:{{count.win}}</span>
+        </van-row>
+        <van-list v-model="page.loading" :finished="page.finished"
+                  :finished-text="page.finishedText" @load="loadPage">
+          <template v-for="record in data">
+            <div class="record-item-div">
+              <van-row type="flex" justify="space-between" align="center" class="record-item-top">
+                <div class="record-item-day">{{record.betDay}}</div>
+                <div>
+                  <span>{{$t("笔数")}}：{{record.num}}</span>
+                  <span>{{$t("流水")}}：{{record.money}}</span>
+                  <span>{{$t("输赢")}}：{{record.win}}</span>
+                </div>
+              </van-row>
+              <div class="record-item-swap">
+                <van-row type="flex" justify="space-between" align="center" class="record-item-title">
+                  <span class="record-item-day">{{record.betType}}</span>
+                  <span class="record-bet-state" :class="'bet-state-'+record.state">投注成功</span>
+                </van-row>
+                <van-row type="flex" justify="space-between" align="center" class="record-item-game">
+                  <span class="record-item-game-name">{{record.gameName}}</span>
+                  <span class="record-item-game-time">{{$t("比赛时间")}}：{{record.gameTime}}</span>
+                </van-row>
+                <div class="record-item-gamevs">{{record.gameVsInfo}}</div>
+                <van-row type="flex" justify="space-between" align="center" class="record-item-info">
+                  <span class="item-game-cate">{{record.betName}}</span>
+                  <span class="item-game-value">{{record.betValue}}</span>
+                </van-row>
+                <van-row type="flex" justify="space-between" align="center" class="record-item-info">
+                  <span class="item-game-betcate">{{record.betCate}}</span>
+                  <span class="item-game-value">{{record.betCateVal}}</span>
+                </van-row>
+                <van-row type="flex" justify="space-between" align="center" class="record-item-info">
+                  <span class="item-game-bet">{{$t("投注金额")}}：{{record.money}}</span>
+                  <span class="item-game-value">{{$t("输/赢")}}：{{record.win}}</span>
+                </van-row>
+                <van-row type="flex" justify="space-between" align="center" class="record-item-order">
+                  <span class="item-game-bet">{{$t("订单号")}}：{{record.orderId}}</span>
+                  <span class="item-game-value">{{$t("投注时间")}}：{{record.orderTime}}</span>
+                </van-row>
+              </div>
+            </div>
+          </template>
+        </van-list>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -93,20 +93,21 @@
         curTab:"zq",
         data:[],
         showPicker:false,
-        curCond:{name:"全部选择,今天",betState:0,betTime:0},
-        page:{pageNum:1,pageSize:20,loading:false,finished:false,finishedText: "-已加载全部内容-"},
+        curCond:{name:this.$i18n.t("全部选择")+","+this.$i18n.t("今天"),betState:0,betTime:0},
+        page:{pageNum:1,pageSize:20,loading:false,finished:false,
+          finishedText: "-"+this.$i18n.t("已加载全部内容")+"-"},
         count:{num:1,money:10.00,win:-10.00},
         qryCond:[
-          {values:["全部选择","已结算","未结算"],defaultIndex:0},
-          {values:["今天","昨天","近七天","三个月"],defaultIndex: 0}
+          {values:[this.$i18n.t("全部选择"),this.$i18n.t("已结算"),this.$i18n.t("未结算")],defaultIndex:0},
+          {values:[this.$i18n.t("今天"),this.$i18n.t("昨天"),this.$i18n.t("近七天"),this.$i18n.t("三个月")],defaultIndex: 0}
         ],
         gameTypes:[
-          {gameName:"足球",gameKey:"zq"},
-          {gameName:"篮球",gameKey:"lq"},
-          {gameName:"排球",gameKey:"pq"},
-          {gameName:"网球",gameKey:"wq"},
-          {gameName:"乒乓球",gameKey:"ppq"},
-          {gameName:"冰球",gameKey:"bq"}
+          {gameName:this.$i18n.t("足球"),gameKey:"zq"},
+          {gameName:this.$i18n.t("篮球"),gameKey:"lq"},
+          {gameName:this.$i18n.t("排球"),gameKey:"pq"},
+          {gameName:this.$i18n.t("网球"),gameKey:"wq"},
+          {gameName:this.$i18n.t("乒乓球"),gameKey:"ppq"},
+          {gameName:this.$i18n.t("冰球"),gameKey:"bq"}
         ]
       }
     },
