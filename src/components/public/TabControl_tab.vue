@@ -195,7 +195,7 @@
           top: 4px;
         }
         .drop{
-          transform: rotate(-90deg);
+          transform: rotate(90deg);
           color: #DB6372;
           top: 4px;
         }
