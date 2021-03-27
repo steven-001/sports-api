@@ -34,7 +34,7 @@
     -ms-interpolation-mode:nearest-neighbor;
   }
 #app {
-  font-family: 'pf-Bold';
+  font-family: pf-Regular,dinpro !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

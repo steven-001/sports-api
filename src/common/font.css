@@ -1,0 +1,51 @@
+/*@font-face {*/
+  /*font-family: 'pf-Medium';   !*自定义文字名*!*/
+  /*src: url('./PingFang Medium.ttf');  !*路径引入文字*!*/
+  /*font-weight: normal;*/
+  /*font-style: normal;*/
+/*}*/
+/*@font-face {*/
+  /*font-family: 'pf-Bold';   !*自定义文字名*!*/
+  /*src: url('./PingFang Bold.ttf');  !*路径引入文字*!*/
+  /*font-weight: normal;*/
+  /*font-style: normal;*/
+/*}*/
+/*@font-face {*/
+  /*font-family: 'pf-Heavy';   !*自定义文字名*!*/
+  /*src: url('./PingFang Heavy.ttf');  !*路径引入文字*!*/
+  /*font-weight: normal;*/
+  /*font-style: normal;*/
+/*}*/
+@font-face {
+  font-family: 'pf-Regular';   /*自定义文字名*/
+  src: url('./PingFang Regular.ttf');  /*路径引入文字*/
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+4E00-9FCB;/*汉字字符集*/
+
+}
+@font-face {
+  font-family: 'dincond_bold';   /*自定义文字名*/
+  src: url('./dincond_bold.otf');  /*路径引入文字*/
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'dinpro';   /*自定义文字名*/
+  src: url('./dinpro.ttf');  /*路径引入文字*/
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+30-39,U+41-5a,U+61-7a; /*数字、大写、小写*/
+}
+@font-face {
+  font-family: 'dinpro_bold';   /*自定义文字名*/
+  src: url('./dinpro_bold.ttf');  /*路径引入文字*/
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'dinpro_medium';   /*自定义文字名*/
+  src: url('./dinpro_medium.ttf');  /*路径引入文字*/
+  font-weight: normal;
+  font-style: normal;
+}

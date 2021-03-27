@@ -170,6 +170,7 @@
         },1000)
       },
       changeBetType(){// tab今日 早盘 滚球 串关
+        this.$store.commit("onContinuousData", [])
         if(this.betType==0){
           let arr=this.sportsTabs.filter(k=>{ return k.todayCount>0})[0]
           this.sportCode=arr.gameCode
